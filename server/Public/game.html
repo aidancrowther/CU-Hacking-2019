@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="favicon.ico" type="image/ico">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<title>cuHacking Real Bitches</title>
+</head>
+<body>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndYZ-U8LhfFWgz8D7XrXwOYeummsLL2s&callback=initMap">
+</script>
+<script src="map.js"></script>
+<div id="landingPage" class="page">
+	<button type="button" id="createButton" class="clickable">
+		Create Game
+	</button>
+	<button type="button" id="joinButton" class="clickable">
+		Join Game
+	</button>
+</div>
+<div id="createGame" class="page">
+	<button type="button" id="chooseLocationBtn" class="clickable">
+		Choose Location
+	</button>
+	<button type="button" id="getCurrentLocationBtn" class="clickable">
+		Use Current Location
+	</button>
+	<br>
+	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
+	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
+		<option value="meters">m</option>
+		<option value="kilometers">km</option>
+		<option value="feet">ft</option>
+		<option value="miles">mi</option>
+	</select>
+
+</div>
+<div id="joinGame" class="page">
+</div>
+<div id="playGame" class="page">
+ 
+ <div id="map"></div>
+ 
+ <style>
+  #map {
+    height: 99vh;
+    width: =device-width, initial-scale=1.0
+  }
+</style> 
+
+</div>
+
+<div id="disclaimer" class="page">
+	<!--TODO: write a disclaimer message about privacy/data usage and logging-->
+</div>
+</body>
+</html>
