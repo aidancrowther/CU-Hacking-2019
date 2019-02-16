@@ -5,11 +5,36 @@
 	<title>[GAME_TITLE]</title>
 </head>
 <body>
-<button type="button" id="createButton" class="clickable">
-	Create Game
-</button>
-<button type="button" id="joinButton" class="clickable">
-	Join Game
-</button>
+<div id="landingPage">
+	<button type="button" id="createButton" class="clickable">
+		Create Game
+	</button>
+	<button type="button" id="joinButton" class="clickable">
+		Join Game
+	</button>
+</div>
+<div id="createGame">
+	<button type="button" id="chooseLocationBtn" class="clickable">
+		Choose Location
+	</button>
+	<button type="button" id="getCurrentLocationBtn" class="clickable">
+		Use Current Location
+	</button>
+	<br>
+	<input type="text" id="newRadiusTxt" class="textBox">
+	<select id="distanceUnitMenu">
+		<option value="volvo">m</option>
+		<option value="saab">km</option>
+		<option value="fiat">ft</option>
+		<option value="audi">mi</option>
+	</select>
+
+</div>
+<div id="joinGame">
+</div>
+<div id="playGame"></div>
+<div id="disclaimer">
+	<!--TODO: write a disclaimer message about privacy/data usage and logging-->
+</div>
 </body>
 </html>
