@@ -5,6 +5,7 @@
 		zoom: 15,
 		scaleControl: true
 		
+		//set default center
 	
 	});
 	
@@ -20,4 +21,22 @@
 	marker.setMap(map);
 	marker.setTitle('Tempe');
 	
+	var deathCircle = new google.maps.Circle({
+		strokeColor: '#FE7569',
+		strokeOpacity: 1,
+		strokeWeight: 2,
+		fillColor: 'transparent',
+		fillOpacity: 0.3,
+		map: map,
+		center: map.center,
+		radius: 1000
+		
+		
+	});
+	
   }
+
+	  
+ 
+  
+  
