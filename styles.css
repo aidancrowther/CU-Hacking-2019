@@ -1,0 +1,17 @@
+:root
+{
+    --color-background1: #fffcfa;
+    --color-background2: #fff9c6;
+    --color-accent1: #d68c38;
+    --color-accent2: #4b7081;
+    --color-accent3: #c1e3ef;
+}
+
+.textBox
+{
+
+    border: 1px solid var(--color-accent1);
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
