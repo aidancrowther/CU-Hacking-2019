@@ -16,6 +16,10 @@ io.on('connection', function(client) {
     client.on('createGame', function(data){
 
         removeRooms(client);
+
+        client['userName'] = data.userName;
+        client['location'] = data.location;
+        client['gameID'] = data.room;
         
         let id = makeId();
         while(games[id]) id = makeId();
@@ -23,14 +27,15 @@ io.on('connection', function(client) {
         games[id] = {
             'origin': [0, 0],
             'radius': 10,
-            'startTime': new Date().getTime()
+            'startTime': new Date().getTime(),
+            'players': [client['userName']]
         }
 
         client.join(id);
         client.emit('setup', id);
-        client['userName'] = 'test';
 
-        console.log(client.userName);
+        console.log(games);
+
     });
 
     client.on('joinGame', function(data){
@@ -38,9 +43,13 @@ io.on('connection', function(client) {
         removeRooms(client);
 
         client.join(data.room);
-        io.to(data.room).emit("alert");
+        client['userName'] = data.userName;
+        client['location'] = data.location;
+        client['gameID'] = data.room;
+        games[data.room]['players'].push(client['userName']);
+        io.to(data.room).emit('updateList', games[data.room]['players']);
 
-        console.log(io.sockets.adapter.rooms[data.room].sockets);
+        console.log(games[data.room]['players']);
 
     });
 
@@ -62,7 +71,7 @@ io.on('connection', function(client) {
 
     client.on('disconnect', function(){
 
-        updateGames();
+        updateGames(client);
 
     });
 
@@ -96,13 +105,22 @@ function gameLoop(id){
 
 }
 
-function updateGames(){
+function updateGames(client){
 
-    for(game in games){
-        if(typeof io.sockets.adapter.rooms[game] === 'undefined'){
-            clearInterval(games[game].loop);
-            delete games[game];
-        }
+    let id = client.gameID;
+
+    if(games[id]){
+        let playerList = games[id].players;
+        let index = playerList.indexOf(client.userName);
+
+        playerList.splice(index, 1);
+
+    }
+
+
+    if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
+        clearInterval(games[id].loop);
+        delete games[id];
     }
 
 }

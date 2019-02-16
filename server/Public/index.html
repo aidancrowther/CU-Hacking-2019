@@ -29,7 +29,7 @@
     });
 
     function test(){
-        socket.emit('createGame');
+        socket.emit('createGame', {'userName': 'test', 'location': [0, 0]});
     }
 
 </script>
