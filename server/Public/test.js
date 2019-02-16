@@ -1,6 +1,4 @@
-/*
 window.onload = function() {
-    
     // Check to see if the browser supports the GeoLocation API.
     if (navigator.geolocation) {
     document.write('Success!');
@@ -15,10 +13,9 @@ window.onload = function() {
         var lon = position.coords.longitude;
         // Show the map
         var style = document.createElement("h1");
-        var text = document.createTextNode(prompt("This is your coordinates are: " + lat + ", " + lon));
-        h.appendChild(text);
+        var text = document.createTextNode("This is your coordinates are: " + lat + ", " + lon);
+        style.appendChild(text);
         document.body.appendChild(style);
     });
 
 }
-*/

@@ -9,12 +9,12 @@ let PORT = 4000;
 
 let games = {};
 
-app.use(express.static('interface'));
-
 //respond to request for index.html
 app.get('/', function(req, res){
-    res.sendfile( ROOT + '/index.html');
+    res.sendfile( ROOT + '/test.html');
 });
+
+app.use('/', express.static('Public'));
 
 io.on('connection', function(client) {
     
