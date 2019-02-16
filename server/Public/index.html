@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+	<head>
+    	
+    </head>
+    <body>
+    	<h1>Hello World!</h1>
+        <div id="future"></div>
+    	<button onclick='test()'>Test</button>
+     	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>        	
+    </body>
+</html>
+
+<script>
+    
+    var socket = io.connect('http://localhost:4000');
+
+	socket.on('connect', function(data) {
+        socket.emit('join');
+    });
+
+    socket.on('setup', function(data) {
+        alert(data);
+    });
+
+    socket.on('alert', function(){
+        alert('hit');
+    });
+
+    function test(){
+        socket.emit('createGame');
+    }
+
+</script>
