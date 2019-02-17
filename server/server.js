@@ -180,9 +180,13 @@ function gameLoop(id){
 function checkGameOver(){
     let players = games[id].players;
     let list = Object.keys(players);
-    if(list.length > 2)return
+    if(list.length == 1){
+        let data = players[list[0]]
+    }else if(list.length == 2){
+    if(p1.)
+    } else return;
     
-    
+    io.to(id).emit("endGame", data);
 }
 
 // check if each player in a game should be taking damage
