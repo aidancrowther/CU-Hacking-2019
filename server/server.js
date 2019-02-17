@@ -34,7 +34,8 @@ io.on('connection', function(client) {
 
         client['userName'] = data.userName;
         client['location'] = data.location;
-        client["hp"] = startingHp;
+        client["hp"] = startingHp+100;
+        client['kills'] = 0;
         client["timeOutOfBounds"] = 0;
         
         let id = makeId();
@@ -66,6 +67,7 @@ io.on('connection', function(client) {
         client['location'] = data.location;
         client['gameID'] = data.room;
         client["hp"] = startingHp;
+        client['kills'] = 0;
         client["timeOutOfBounds"] = 0;
         games[data.room]['players'][data.userName] = client;
         client.emit('joined');
@@ -114,6 +116,26 @@ io.on('connection', function(client) {
     });
 
     client.on('disconnect', function(){
+
+        updateGames(client);
+
+    });
+
+    client.on('die', function(){
+
+        let id = client.gameID;
+        let players = games[id].players;
+        let list = Object.keys(players);
+        let index = list.indexOf(client.userName);
+
+        let hunter = list[(index+list.length-1)%list.length];
+
+        console.log(hunter);
+        console.log(games[id]['players'][hunter]);
+
+        games[id]['players'][hunter]['kills'] += 1;
+
+        players[list[index]]
 
         updateGames(client);
 
@@ -207,9 +229,7 @@ function updateGames(client){
     let id = client.gameID;
 
     if(games[id]){
-        let playerList = Object.keys(games[id].players);
-        let index = playerList.indexOf(client.userName);
-
+        console.log(client.userName);
         delete games[id]['players'][client.userName];
     }
 
