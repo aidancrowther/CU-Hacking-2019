@@ -22,3 +22,10 @@ function joinGame(gameCode)
 	console.log(gameCode);
 	goTo("#waitingRoom");
 }
+
+function startGame()
+{
+	//TODO: write code to tell server that game is starting
+	
+	goTo("#playGame");
+}
