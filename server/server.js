@@ -190,6 +190,7 @@ function checkGameOver(){
     }
     else return;
     
+    clearInterval(games[id]["loop"]);
     io.to(id).emit("endGame", data);
 }
 
