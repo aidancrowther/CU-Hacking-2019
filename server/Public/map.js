@@ -116,4 +116,9 @@
 		console.log("Boop");
 	}
 
-	alert('HI');
+	function getDist(p1, p2){
+		var distY = abs(p1[0] - p2[0]);
+		var distX = abs(p1[1] - p2[1]);
+
+		return Math.sqrt(distX**2 + distY**2);
+	}
