@@ -1,7 +1,11 @@
 const express = require('express');
+const fs = require('fs');
 
 let app = express();
-let server = require('http').createServer(app);
+let server = require('https').createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app);
 let io = require('socket.io')(server);
 
 let ROOT = './Public';
@@ -19,20 +23,20 @@ io.on('connection', function(client) {
 
         client['userName'] = data.userName;
         client['location'] = data.location;
-        client['gameID'] = data.room;
         
         let id = makeId();
         while(games[id]) id = makeId();
         
         games[id] = {
             'origin': [0, 0],
-            'radius': 10,
+            'radius': data.radius,
             'startTime': new Date().getTime(),
             'players': [client['userName']]
         }
 
         client.join(id);
         client.emit('setup', id);
+        client['gameID'] = id;
 
         console.log(games);
 
@@ -47,6 +51,7 @@ io.on('connection', function(client) {
         client['location'] = data.location;
         client['gameID'] = data.room;
         games[data.room]['players'].push(client['userName']);
+        client.emit('joined');
         io.to(data.room).emit('updateList', games[data.room]['players']);
 
         console.log(games[data.room]['players']);
@@ -121,6 +126,9 @@ function updateGames(client){
     if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
         clearInterval(games[id].loop);
         delete games[id];
+    }
+    else{
+        if(id) io.to(id).emit('updateList', games[id]['players']);
     }
 
 }

@@ -7,6 +7,7 @@
 	<link rel="shortcut icon" href="assets/favicon.ico"/>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>   
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script src="client.js"></script>
 	<script async defer
@@ -25,7 +26,8 @@
 	</button>
 </div>
 <div id="createGame" class="page">
-	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
+	<label for="newUsrName-createGame">Username</label><input type="text" id="newUsrName-createGame" class="textBox">
+	<label for="newRadiusTxt">Define Radius</label><input type="number" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
 		<option value="kilometers">km</option>
@@ -37,12 +39,15 @@
 	</button>
 </div>
 <div id="joinGame" class="page">
+	<label for="newUsrName-joinGame">Username</label><input type="text" id="newUsrName-joinGame" class="textBox">
 	<label for="joinGameCodeTxt"></label><input type="text" id="joinGameCodeTxt" class="textBox"><br>
-	<button type="button" id="joinGameBtn" class="btn" onclick="joinGame($('#joinGameCodeTxt').val())">
+	<button type="button" id="joinGameBtn" class="btn" onclick="joinGame()">
 		Join Game
 	</button>
 </div>
 <div id="waitingRoom" class="page">
+	<h1 id="roomCode"></h1>
+	<div id="usrList"></div>
 	<button type="button" id="startBtn" class="btn" onclick="startGame()">
 		Start!
 	</button>
