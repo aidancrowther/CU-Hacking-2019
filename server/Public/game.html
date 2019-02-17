@@ -2,32 +2,44 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" href="favicon.ico" type="image/ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<link rel="shortcut icon" href="assets/favicon.ico"/>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script src="client.js"></script>
+	<script async defer
+	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndYZ-U8LhfFWgz8D7XrXwOYeummsLL2s&callback=initMap">
+	</script>
+	<script src="map.js"></script>
 	<title>cuHacking Real Bitches</title>
 </head>
 <body>
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndYZ-U8LhfFWgz8D7XrXwOYeummsLL2s&callback=initMap">
-</script>
-<script src="map.js"></script>
-<div id="landingPage" class="page">
-	<button type="button" id="createButton" class="clickable">
+<div id="landingPage" class="page" style="visibility: visible;">
+	<br><br>
+	<h1 align="center">Hunt Royale</h1>
+	<br><br><br>
+	<button type="button" id="createButton" class="btn" onclick="goTo('#createGame')">
 		Create Game
-	</button>
-	<button type="button" id="joinButton" class="clickable">
+	</button><br><br>
+	<button type="button" id="joinButton" class="btn" onclick="goTo('#joinGame')">
 		Join Game
 	</button>
 </div>
 <div id="createGame" class="page">
-	<button type="button" id="chooseLocationBtn" class="clickable">
-		Choose Location
-	</button>
-	<button type="button" id="getCurrentLocationBtn" class="clickable">
-		Use Current Location
-	</button>
+	<br><br>
+	<h1 align="center">New Lobby</h1>
 	<br>
-	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
+	<div for="newUsrName-createGame" class="textBoxDescript">Username</div>
+
+	<input type="text" id="newUsrName-createGame" class="textBox">
+	<br>
+	<br>
+	<div for="newRadiusTxt" class="textBoxDescript">Define Radius</div>
+
+	<input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
 		<option value="kilometers">km</option>
@@ -35,24 +47,75 @@
 		<option value="miles">mi</option>
 	</select>
 
+	<br><br><br><br>
+	<button type="button" id="createGameSubmitBtn" class="btn" onclick="createGame()">
+		Create Game
+	</button>
+	<br><br><br>
+	<button type="button" class="backbtn" onclick="goTo('#landingPage')">
+		Back
+	</button>
+
 </div>
 <div id="joinGame" class="page">
+	<br><br>
+	<h1 align="center">New Lobby</h1>
+	<br>
+	<div for="newUsrName-joinGame" class="textBoxDescript">Username</div>
+	<input type="text" id="newUsrName-joinGame" class="textBox">
+	<br>
+	<br>
+	<div for="joinGameCodeTxt" class="textBoxDescript">Game Code</div>
+	<input type="text" id="joinGameCodeTxt" class="textBox">
+	<br><br><br><br>
+	<button type="button" id="joinGameBtn" class="btn" onclick="joinGame($('#joinGameCodeTxt').val())">
+		Join Game
+	</button>
+	<br><br><br>
+	<button type="button" class="backbtn" onclick="goTo('#landingPage')">
+		Back
+	</button>
+</div>
+
+<div id="waitingRoom" class="page">
+	<br><br>
+	<h1 align="center">Waiting for Players</h1>
+	<br><br>
+	<p id="playersJoined" class="target"> Players in Lobby: 420</p>
+	<h1 id="roomCode"></h1>
+	<div id="usrList"></div>
+	<button type="button" id="startBtn" class="btn" onclick="startGame()">
+		Start!
+	</button>
 </div>
 <div id="playGame" class="page">
- 
- <div id="map"></div>
- 
- <style>
-  #map {
-    height: 99vh;
-    width: =device-width, initial-scale=1.0
-  }
-</style> 
+<br>
+	<h1 id="stillAlive" align = "center">Alive: 100</h1>
+	<br>
+
+
+	<div id="map"></div>
+
+	<style>
+		#map {
+			margin: auto;
+			margin-top: margin;
+			height: 96vw;
+			width: 96vw;
+			border-style: solid;
+			border-color: #4b7081;
+			border-width: thick
+		}
+	</style>
+
+	<br>
+	<p class="target">Target</p>
+	<button type="button" id="targetPerson" class="widebtn">
+		Big Mood
+	</button>
 
 </div>
-
 <div id="disclaimer" class="page">
-	<!--TODO: write a disclaimer message about privacy/data usage and logging-->
+	<!--TODO: write a disclaimer message about privacy/data usage and logging, GPS, etc.-->
 </div>
 </body>
-</html>

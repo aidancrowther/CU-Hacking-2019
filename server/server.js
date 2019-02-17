@@ -1,7 +1,11 @@
 const express = require('express');
+const fs = require('fs');
 
 let app = express();
-let server = require('http').createServer(app);
+let server = require('https').createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app);
 let io = require('socket.io')(server);
 
 let ROOT = './Public';
@@ -16,21 +20,33 @@ io.on('connection', function(client) {
     client.on('createGame', function(data){
 
         removeRooms(client);
+
+        let userName = data.userName;
+
+        players = {};
+        players[userName] = client;
+
+        client['userName'] = data.userName;
+        client['location'] = data.location;
         
         let id = makeId();
         while(games[id]) id = makeId();
         
         games[id] = {
             'origin': [0, 0],
-            'radius': 10,
-            'startTime': new Date().getTime()
+            'radius': data.radius,
+            'startTime': new Date().getTime(),
+            'players': players
         }
 
         client.join(id);
         client.emit('setup', id);
-        client['userName'] = 'test';
+        client['gameID'] = id;
 
-        console.log(client.userName);
+        io.to(id).emit('updateList', Object.keys(games[id]['players']));
+
+        console.log(games);
+
     });
 
     client.on('joinGame', function(data){
@@ -38,9 +54,14 @@ io.on('connection', function(client) {
         removeRooms(client);
 
         client.join(data.room);
-        io.to(data.room).emit("alert");
+        client['userName'] = data.userName;
+        client['location'] = data.location;
+        client['gameID'] = data.room;
+        games[data.room]['players'][data.userName] = client;
+        client.emit('joined');
+        io.to(data.room).emit('updateList', Object.keys(games[data.room]['players']));
 
-        console.log(io.sockets.adapter.rooms[data.room].sockets);
+        console.log(games[data.room]['players']);
 
     });
 
@@ -49,7 +70,22 @@ io.on('connection', function(client) {
         console.log(client.userName);
 
         id = Object.keys(client.rooms)[0];
-        io.to(id).emit('alert');
+        io.to(id).emit('startGame');
+
+        console.log(Object.keys(games[id].players));
+
+        games[id].players = Object.keys(games[id].players)
+        .map((key) => ({key, value: games[id].players[key]}))
+        .sort((a, b) => b.key.localeCompare(a.key))
+        .reduce((acc, e) => {
+        acc[e.key] = e.value;
+        return acc;
+        }, {});
+
+        console.log(Object.keys(games[id].players));
+
+        broadcastHunters(games[id].players);
+
         games[id]['loop'] = setInterval(gameLoop, 2000, id);
 
     });
@@ -62,7 +98,7 @@ io.on('connection', function(client) {
 
     client.on('disconnect', function(){
 
-        updateGames();
+        updateGames(client);
 
     });
 
@@ -96,21 +132,70 @@ function gameLoop(id){
 
 }
 
-function updateGames(){
+function updateGames(client){
 
-    for(game in games){
-        if(typeof io.sockets.adapter.rooms[game] === 'undefined'){
-            clearInterval(games[game].loop);
-            delete games[game];
-        }
+    let id = client.gameID;
+
+    if(games[id]){
+        let playerList = Object.keys(games[id].players);
+        let index = playerList.indexOf(client.userName);
+
+        delete playerList[index];
+
+    }
+
+    if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
+        clearInterval(games[id].loop);
+        delete games[id];
+    }
+    else{
+        if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
     }
 
 }
 
-function getList(){
+function broadcastHunters(players){
 
-    for(game in games){
-        console.log(io.sockets.adapter.rooms[game].sockets);
+    let list = Object.keys(players);
+
+    for(player in players){
+
+        let index = list.indexOf(player);
+        let target = index+1;
+        let hunter = index-1;
+
+        if(target >= list.length) target = 0;
+        if(hunter < 0) hunter = list.length-1;
+
+        data = {
+            'targetname': list[target],
+            'targetLoc': players[list[target]].location,
+            'hunterName': list[hunter]
+        }
+
+        players[player].emit('huntData', data);
     }
 
+}
+
+function shuffleObj(obj){
+
+    let list = Object.keys(obj);
+    let temp = {};
+
+    list.shuffle();
+
+    for(entry in list){
+        temp[list[entry]] = obj[list[entry]];
+    }
+
+    return temp;
+
+}
+
+function getDist(p1, p2){
+    var distY = abs(p1[0] - p2[0]);
+    var distX = abs(p1[1] - p2[1]);
+
+    return Math.sqrt(distX**2 + distY**2);
 }

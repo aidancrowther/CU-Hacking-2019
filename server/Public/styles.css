@@ -1,24 +1,115 @@
 :root
 {
-    --color-background1: #fffcfa;
-    --color-background2: #fff9c6;
-    --color-accent1: #d68c38;
+    --color-background1: #DCF2F0;
+    --color-background2: #D4FCF9;
+    --color-accent1: #f49e3f;
     --color-accent2: #4b7081;
     --color-accent3: #c1e3ef;
 }
-
+body
+{
+	background-color: var(--color-background1)
+}
 .page
 {
     border: 1px dashed black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    visibility: hidden;
     padding: 3px;
     margin: 1px
 }
 
+h1{
+	color: var(--color-accent1);
+	font-family: "Impact";
+	font-size: 60px;
+	text-shadow: 3px 2px white
+}
+
+.textBox, .btn
+{
+    width: 60%;
+    margin-left: 20%;
+}
+
 .textBox
 {
-
     border: 1px solid var(--color-accent1);
     border-radius: 20px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.textBoxDescript
+{
+	color: var(--color-accent1);
+	font-size: 150%;
+	text-align: center
+	
+	
+}
+
+.stillAliveFormat
+{
+	color: var(--color-accent1);
+	border: 1px;
+	font-size: 250%;
+	text-align: center
+}
+
+.target
+{
+	color: var(--color-accent2);
+	border: 1px;
+	font-size: 125%;
+	text-align: center
+}
+
+.backbtn
+{
+	height: 60px;
+    border: 1px;
+    background-color: var(--color-accent2);
+    color: var(--color-accent1);
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 150%;
+	width: 25%;
+    margin-left: 70%;
+	
+}
+
+.widebtn
+{
+	height: 60px;
+    border: 1px;
+    background-color: var(--color-accent2);
+    color: var(--color-accent1);
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 200%;
+	width: 80%;
+    margin-left: 10%;
+	
+}
+
+.btn
+{
+    height: 150px;
+    border: 1px;
+    background-color: var(--color-accent2);
+    color: var(--color-accent1);
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 250%;
+}
+
+#startBtn
+{
+    visibility: hidden;
 }
