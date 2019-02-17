@@ -148,7 +148,19 @@ function gameLoop(id){
     determineDamage(id);
     updatePlayers(id);
     broadcastHunters(games[id].players);
+    checkGameOver(id)
+}
 
+//check if the game has reached an end condition
+//if so: determine a winner and announce it to all players
+//then end the game loop
+//endif
+function checkGameOver(){
+    let players = games[id].players;
+    let list = Object.keys(players);
+    if(list.length > 2)return
+    
+    
 }
 
 // check if each player in a game should be taking damage
