@@ -1,5 +1,6 @@
   var map;
   var deathCircle;
+  var targetCircle;
   function initMap() {
     // Create the map object.
     map = new google.maps.Map(document.getElementById('map'), {
@@ -35,6 +36,17 @@
 	});
 	
 
+	targetCircle = new google.maps.Circle({
+		strokeColor: '#e114ff',
+		strokeOpacity: 1,
+		strokeWeight: 2,
+		fillColor: '#f39eff',
+		fillOpacity: 0.2,
+		map: map,
+		center: map.center,
+		radius: 5
+	});
+	
 	
 	//NONE OF THIS WORKS
 	/*
