@@ -6,6 +6,7 @@ let server = require('https').createServer({
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.cert')
 }, app);
+//let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 
 let ROOT = './Public';
@@ -18,6 +19,10 @@ const startingHp = 100;
 
 
 let games = {};
+
+app.get('/', function(req, res){
+   res.sendfile(ROOT+'/game.html');
+});
 
 app.use('/', express.static('Public'));
 
