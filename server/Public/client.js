@@ -87,13 +87,11 @@ function getRadius(){
 function die()
 {
 	goTo("#deathMsg");
-	socket.emit("dead")
+	socket.emit("die");
 }
 
 //Socket endpoint for receiving room code
 socket.on('setup', function(data){
-
-	//alert(data);
 
 	$("#roomCode").text(data);
 	
@@ -164,7 +162,7 @@ socket.on("updatePlayers", function(data){
 		die();
 	}
 	$("#currentHealth").text("Health: " + data);
-	
+
 });
 
 socket.on('alert', function(){
