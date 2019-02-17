@@ -14,6 +14,7 @@ let PORT = 4000;
 const hunterDmgDist = 6; //min distance for hunter to deal damage to target
 const hunterDmg = 10; //damage dealt by a nearby hunter
 const OOBdmg = 5; //damage taken when out of bounds
+const startingHp = 100;
 
 
 let games = {};
@@ -62,6 +63,8 @@ io.on('connection', function(client) {
         client['userName'] = data.userName;
         client['location'] = data.location;
         client['gameID'] = data.room;
+        client["hp"] = startingHp;
+        client["timeOutOfBounds"] = 0;
         games[data.room]['players'][data.userName] = client;
         client.emit('joined');
         io.to(data.room).emit('updateList', Object.keys(games[data.room]['players']));
@@ -148,27 +151,26 @@ function determineDamage(id){
         let hunter = players[index-1];
         
         //damage from hunter
-        if(!outsideRange(player.location, hunter.location, hunterDmgDist))
+        if(!outsideRange(player["location"], hunter["location"], hunterDmgDist))
             takeDmg(player, hunterDmg);
         
         //out-if-bounds damage
-        if(outsideRange(player.location, games[id].origin, games[id].radius)){
-            if(player.timeOutOfBounds++ > 10)
+        if(outsideRange(player["location"], games["id"]["origin"], games[id].radius)){
+            if(player["timeOutOfBounds"]++ > 10)
             {
                 takeDmg(player, OOBdmg)
             }
             
         } else {
-            player.timeOutOfBounds = 0;
+            player["timeOutOfBounds"] = 0;
         }
     }
 
 }
 
-//TODO: cause <playr> to take <dmg> many damage
 function takeDmg(playr, dmg)
 {
-
+    playr["hp"] -= dmg;
 }
 
 //Return whether or not a player is outside the boundary
