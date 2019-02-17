@@ -144,7 +144,7 @@ socket.on('huntData', function(data){
 });
 
 socket.on('updatePlayers', function(data){
-	
+	console.log(data);
 });
 
 socket.on('alert', function(){
