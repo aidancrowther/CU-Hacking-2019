@@ -6,6 +6,7 @@ let server = require('https').createServer({
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.cert')
 }, app);
+//let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 
 let ROOT = './Public';
@@ -18,6 +19,10 @@ const startingHp = 100;
 
 
 let games = {};
+
+app.get('/', function(req, res){
+   res.sendfile(ROOT+'/game.html');
+});
 
 app.use('/', express.static('Public'));
 
@@ -164,7 +169,8 @@ function gameLoop(id){
     determineDamage(id);
     updatePlayers(id);
     broadcastHunters(games[id].players);
-    checkGameOver(id)
+    checkGameOver(id);
+
 }
 
 //check if the game has reached an end condition
@@ -176,14 +182,14 @@ function checkGameOver(){
     let list = Object.keys(players);
     let data;
     if(list.length == 1){
-        data = players[list[0]][userName];
+        data = players[list[0]].userName;
     }else if(list.length == 2){
         let p1 = players[list[0]];
         let p2 = players[list[1]];
         if(p1.hp > p2.hp || p1.kills > p2.kills){//p1 wins
-            data = p1[userName];
+            data = p1.userName;
         }else{//p2 wins
-            data = p2[userName];
+            data = p2.userName;
         }
     } else if(list.length == 0){
         data = "NOBODY!!";
