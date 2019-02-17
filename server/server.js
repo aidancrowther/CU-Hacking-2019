@@ -145,10 +145,12 @@ function gameLoop(id){
 function determineDamage(id){
 
     let players = games[id].players;
+    let list = Object.keys(players);
 
-    for(let index = 0; index < players.length; index++){
-        let player = players[index];
-        let hunter = players[index-1];
+    for(let playerKey in players){
+        let player = players[playerKey];
+        let playerIndex = list.indexOf(playerKey);
+        let hunter = list[(playerIndex+list.length-1)%length];
         
         //damage from hunter
         if(!outsideRange(player["location"], hunter["location"], hunterDmgDist))
