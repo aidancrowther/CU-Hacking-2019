@@ -42,6 +42,15 @@ h1{
     padding-right: 20px;
 }
 
+.textBoxDescript
+{
+	color: var(--color-accent1);
+	font-size: 150%;
+	text-align: center
+	
+	
+}
+
 .stillAliveFormat
 {
 	color: var(--color-accent1);
@@ -54,7 +63,7 @@ h1{
 {
 	color: var(--color-accent2);
 	border: 1px;
-	font-size: 100%;
+	font-size: 125%;
 	text-align: center
 }
 
