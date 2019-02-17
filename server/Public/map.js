@@ -6,6 +6,7 @@
 		zoom: 15,
 		scaleControl: true
 		
+		
 		//set default center
 	
 	});
@@ -32,6 +33,8 @@
 		center: map.center,
 		radius: 1250
 	});
+	
+
 	
 	//NONE OF THIS WORKS
 	/*
@@ -101,6 +104,14 @@
 			deathCircle.setRadius(deathCircle.radius - 10);
 		} 
 		*/
+	}
+	
+	function updateData(){
+		let leftAlive = document.getElementById("stillAlive");
+		textDiv.innerHTML = "Still Alive: " + "100";
+		
+		let yourTarget = document.getElementById("targetPerson");
+		
 	}
 
 	  
