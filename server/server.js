@@ -175,7 +175,8 @@ function takeDmg(playr, dmg)
 
 //Return whether or not a player is outside the boundary
 function outsideRange(playerPos, origin, radius){
-
+    var dist = getDist(playerPos, origin);
+    return (dist > radius) ? true : false;
 }
 
 function updateGames(client){
