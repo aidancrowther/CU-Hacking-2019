@@ -2,20 +2,25 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" href="favicon.ico" type="image/ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<link rel="shortcut icon" href="assets/favicon.ico"/>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script src="client.js"></script>
+	<script async defer
+	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndYZ-U8LhfFWgz8D7XrXwOYeummsLL2s&callback=initMap">
+	</script>
+	<script src="map.js"></script>
 	<title>cuHacking Real Bitches</title>
 </head>
 <body>
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndYZ-U8LhfFWgz8D7XrXwOYeummsLL2s&callback=initMap">
-</script>
-<script src="map.js"></script>
-<div id="landingPage" class="page">
-	<button type="button" id="createButton" class="clickable">
+<div id="landingPage" class="page" style="visibility: visible;">
+	<button type="button" id="createButton" class="btn" onclick="goTo('#createGame')">
 		Create Game
-	</button>
-	<button type="button" id="joinButton" class="clickable">
+	</button><br>
+	<button type="button" id="joinButton" class="btn" onclick="goTo('#joinGame')">
 		Join Game
 	</button>
 </div>
@@ -39,30 +44,36 @@
 		<option value="feet">ft</option>
 		<option value="miles">mi</option>
 	</select>
-	
-	<br>
-	<div id="text-area"></div>
-	
 
+	<button type="button" id="createGameSubmitBtn" class="btn" onclick="createGame()">
+		Create Game
+	</button>
 
 </div>
 <div id="joinGame" class="page">
+	<label for="joinGameCodeTxt"></label><input type="text" id="joinGameCodeTxt" class="textBox"><br>
+	<button type="button" id="joinGameBtn" class="btn" onclick="joinGame($('#joinGameCodeTxt').val())">
+		Join Game
+	</button>
+</div>
+<div id="waitingRoom" class="page">
+	<button type="button" id="startBtn" class="btn" onclick="startGame()">
+		Start!
+	</button>
 </div>
 <div id="playGame" class="page">
- 
- <div id="map"></div>
- 
- <style>
-  #map {
-    height: 99vh;
-    width: 99vh
-  }
-</style> 
+
+	<div id="map"></div>
+
+	<style>
+		#map {
+			height: 99vh;
+			width: 99vh
+		}
+	</style>
 
 </div>
-
 <div id="disclaimer" class="page">
-	<!--TODO: write a disclaimer message about privacy/data usage and logging-->
+	<!--TODO: write a disclaimer message about privacy/data usage and logging, GPS, etc.-->
 </div>
 </body>
-</html>
