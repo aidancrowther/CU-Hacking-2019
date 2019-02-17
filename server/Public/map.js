@@ -15,7 +15,6 @@
 	var diameter;
 	
 	map.setZoom(15);
-    map.setCenter({lat: 33.4255, lng: -111.9400});
 	
 	var marker = new google.maps.Marker();
  
