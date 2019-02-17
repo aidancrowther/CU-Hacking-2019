@@ -1,4 +1,4 @@
-let socket = io.connect('https://localhost:4000');
+let socket = io.connect(window.location.origin);
 let numPlayers = 0;
 
 function goTo(destPage)
@@ -136,6 +136,8 @@ socket.on('startGame', function(data){
 
 	console.log(data);
 
+	setInterval(getPos, 2000);
+
 	$("#startBtn").css("visibility", "inherit");
 	goTo("#playGame");
 	
@@ -151,9 +153,6 @@ socket.on('huntData', function(data){
 	document.getElementById('targetPerson').innerHTML = data.targetname;
 	//set target circle to display on your target location
 	targetCircle.setCenter({lat: data.targetLoc[0], lng: data.targetLoc[1]});
-	
-	
-	
 });
 
 socket.on("updatePlayers", function(data){

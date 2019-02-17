@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="map.js"></script>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<link rel="shortcut icon" href="assets/favicon.ico"/>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -14,7 +15,6 @@
 	<script async defer
 	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAndYZ-U8LhfFWgz8D7XrXwOYeummsLL2s&callback=initMap">
 	</script>
-	<script src="map.js"></script>
 	<title>cuHacking Real Bitches</title>
 </head>
 <body>
@@ -98,7 +98,13 @@
 </div>
 <div id="playGame" class="page">
 <br>
-	<h1 id="stillAlive" align = "center">Alive: 100</h1>
+	
+	<div style="clear: both; margin-left: 10px; margin-right: 10px;">
+	<h2 id="stillAlive" style="float: left; color: #f49e3f">Alive: 100</h2>
+	<h2 id="healthDisplay" style="float: right">HP: 100</h2>
+
+	</div>
+	<hr />
 	<br>
 
 
@@ -115,8 +121,10 @@
 			border-width: thick
 			}
 	</style>
+	<br>
 
 	<br>
+	
 	<p class="target">Target</p>
 	<button type="button" id="targetPerson" class="widebtn">
 		Big Mood
