@@ -143,7 +143,7 @@ function determineDamage(id){
 }
 
 //Return whether or not a player is outside the boundary
-function outsideRange(playerPos, origin){
+function outsideRange(playerPos, origin, radius){
 
 }
 
