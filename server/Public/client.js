@@ -1,5 +1,5 @@
 let socket = io.connect('https://localhost:4000');
-
+let numPlayers = 0;
 
 function goTo(destPage)
 {
@@ -102,6 +102,11 @@ socket.on('updateList', function(data){
 
 	//data is an array containing all usernames of waiting users
 	console.log(data);
+	
+	numPlayers = data.length;
+	
+	document.getElementById('stillAlive').innerHTML = "Alive: " + numPlayers;
+	document.getElementById('playersJoined').innerHTML = "Players in Lobby: " + numPlayers;
 
 	setUsrList(data);
 
@@ -133,6 +138,7 @@ socket.on('huntData', function(data){
 	document.getElementById('targetPerson').innerHTML = data.targetname;
 	//set target circle to display on your target location
 	targetCircle.setCenter({lat: data.targetLoc[0], lng: data.targetLoc[1]});
+	
 	
 	
 });
