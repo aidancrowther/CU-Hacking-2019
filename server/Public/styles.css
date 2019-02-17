@@ -108,21 +108,6 @@ h2{
 	
 }
 
-.understandbtn
-{
-	height: 60px;
-    border: 1px;
-    background-color: var(--color-accent1);
-    color: var(--color-accent2);
-    border-radius: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 100%;
-	width: 70%;
-    margin-left: 30%;
-	
-}
-
 .btn
 {
     height: 150px;
