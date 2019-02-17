@@ -11,6 +11,12 @@ let io = require('socket.io')(server);
 let ROOT = './Public';
 let PORT = 4000;
 
+const hunterDmgDist = 6; //min distance for hunter to deal damage to target
+const hunterDmg = 10; //damage dealt by a nearby hunter
+const OOBdmg = 5; //damage taken when out of bounds
+const startingHp = 100;
+
+
 let games = {};
 
 app.use('/', express.static('Public'));
@@ -57,6 +63,8 @@ io.on('connection', function(client) {
         client['userName'] = data.userName;
         client['location'] = data.location;
         client['gameID'] = data.room;
+        client["hp"] = startingHp;
+        client["timeOutOfBounds"] = 0;
         games[data.room]['players'][data.userName] = client;
         client.emit('joined');
         io.to(data.room).emit('updateList', Object.keys(games[data.room]['players']));
@@ -70,7 +78,7 @@ io.on('connection', function(client) {
         console.log(client.userName);
 
         id = Object.keys(client.rooms)[0];
-        io.to(id).emit('startGame');
+        io.to(id).emit('startGame', games[id].location);
 
         console.log(Object.keys(games[id].players));
 
@@ -132,19 +140,43 @@ function gameLoop(id){
 
 }
 
+// check if each player in a game should be taking damage
+// either by their hunter or being outside the zone
 function determineDamage(id){
 
     let players = games[id].players;
 
-    for(player in players){
-
+    for(let index = 0; index < players.length; index++){
+        let player = players[index];
+        let hunter = players[index-1];
+        
+        //damage from hunter
+        if(!outsideRange(player["location"], hunter["location"], hunterDmgDist))
+            takeDmg(player, hunterDmg);
+        
+        //out-if-bounds damage
+        if(outsideRange(player["location"], games["id"]["origin"], games[id].radius)){
+            if(player["timeOutOfBounds"]++ > 10)
+            {
+                takeDmg(player, OOBdmg)
+            }
+            
+        } else {
+            player["timeOutOfBounds"] = 0;
+        }
     }
 
 }
 
+function takeDmg(playr, dmg)
+{
+    playr["hp"] -= dmg;
+}
+
 //Return whether or not a player is outside the boundary
 function outsideRange(playerPos, origin, radius){
-
+    var dist = getDist(playerPos, origin);
+    return (dist > radius) ? true : false;
 }
 
 function updateGames(client){
