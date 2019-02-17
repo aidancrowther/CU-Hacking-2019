@@ -143,7 +143,8 @@ function removeRooms(client){
 
 function gameLoop(id){
 
-    console.log(id);
+    determineDamage(id);
+    updatePlayers(id);
 
 }
 
@@ -196,17 +197,18 @@ function updateGames(client){
         let playerList = Object.keys(games[id].players);
         let index = playerList.indexOf(client.userName);
 
-        delete playerList[index];
-
+        console.log(games[id]['players'][client.userName]);
+        console.log(Object.keys(games[id].players));
+        delete games[id]['players'][client.userName];
+        console.log(Object.keys(games[id].players));
     }
 
     if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
         clearInterval(games[id].loop);
         delete games[id];
     }
-    else{
-        if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
-    }
+    
+    if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
 
 }
 
