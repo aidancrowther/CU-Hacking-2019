@@ -87,7 +87,7 @@ function getRadius(){
 //Socket endpoint for receiving room code
 socket.on('setup', function(data){
 
-	alert(data);
+	//alert(data);
 
 	$("#roomCode").text(data);
 	
@@ -105,6 +105,15 @@ socket.on('updateList', function(data){
 	
 	numPlayers = data.length;
 	
+	if (numPlayers >= 3) {
+		//$('#startBtn').css('disabled', 'false');
+		document.getElementById('startBtn').disabled = false;
+	}
+	else {
+		//$('#startBtn').css('disabled', 'true');
+		document.getElementById('startBtn').disabled = true;
+	}
+
 	document.getElementById('stillAlive').innerHTML = "Alive: " + numPlayers;
 	document.getElementById('playersJoined').innerHTML = "Players in Lobby: " + numPlayers;
 
