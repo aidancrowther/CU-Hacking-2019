@@ -103,7 +103,17 @@
 		*/
 	}
 
-	  
- 
-  
-  
+	setInterval(updateLoc, 10000);
+
+	function updateLoc(){
+		console.log("Beep");
+		navigator.geolocation.getCurrentPosition(function(position) {
+			var lat = position.coords.latitude;
+			var lon = position.coords.longitude;
+	
+			alert(lat+" "+lon);
+		});
+		console.log("Boop");
+	}
+
+	alert('HI');
