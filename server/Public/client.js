@@ -47,7 +47,7 @@ function startGame()
 {
 
 	//TODO: write code to tell server that game is starting
-	goTo("#playGame");
+	socket.emit('startGame');
 
 }
 
@@ -89,11 +89,8 @@ function getRadius(){
 //Socket endpoint for receiving room code
 socket.on('setup', function(data){
 
-	//data is a string containing the room code
 	alert(data);
-
-	$("#roomCode").text(data);
-
+	
 	goTo("#waitingRoom");
 
 });
@@ -113,4 +110,14 @@ socket.on('joined', function(){
 
 	goTo("#waitingRoom");
 
+});
+
+socket.on('startGame', function(){
+
+	goTo("#playGame");
+
+});
+
+socket.on('alert', function(){
+	alert('hit');
 });

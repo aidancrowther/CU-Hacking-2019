@@ -21,6 +21,11 @@ io.on('connection', function(client) {
 
         removeRooms(client);
 
+        let userName = data.userName;
+
+        players = {};
+        players[userName] = client;
+
         client['userName'] = data.userName;
         client['location'] = data.location;
         
@@ -31,12 +36,14 @@ io.on('connection', function(client) {
             'origin': [0, 0],
             'radius': data.radius,
             'startTime': new Date().getTime(),
-            'players': [client['userName']]
+            'players': players
         }
 
         client.join(id);
         client.emit('setup', id);
         client['gameID'] = id;
+
+        io.to(id).emit('updateList', Object.keys(games[id]['players']));
 
         console.log(games);
 
@@ -50,9 +57,9 @@ io.on('connection', function(client) {
         client['userName'] = data.userName;
         client['location'] = data.location;
         client['gameID'] = data.room;
-        games[data.room]['players'].push(client['userName']);
+        games[data.room]['players'][data.userName] = client;
         client.emit('joined');
-        io.to(data.room).emit('updateList', games[data.room]['players']);
+        io.to(data.room).emit('updateList', Object.keys(games[data.room]['players']));
 
         console.log(games[data.room]['players']);
 
@@ -63,7 +70,11 @@ io.on('connection', function(client) {
         console.log(client.userName);
 
         id = Object.keys(client.rooms)[0];
-        io.to(id).emit('alert');
+        io.to(id).emit('startGame');
+        games[id]['players'].shuffle();
+
+        broadcastHunters(id);
+
         games[id]['loop'] = setInterval(gameLoop, 2000, id);
 
     });
@@ -115,28 +126,57 @@ function updateGames(client){
     let id = client.gameID;
 
     if(games[id]){
-        let playerList = games[id].players;
+        let playerList = Object.keys(games[id].players);
         let index = playerList.indexOf(client.userName);
 
-        playerList.splice(index, 1);
+        delete playerList[index];
 
     }
-
 
     if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
         clearInterval(games[id].loop);
         delete games[id];
     }
     else{
-        if(id) io.to(id).emit('updateList', games[id]['players']);
+        if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
     }
 
 }
 
-function getList(){
+function broadcastHunters(){
 
-    for(game in games){
-        console.log(io.sockets.adapter.rooms[game].sockets);
+    let players = io.sockets.adapter.rooms[id].sockets;
+    let list = games[id].players;
+
+    for(player in players){
+        console.log(player);
+        io.to('${'+player+'}').emit('alert');
+    }
+
+}
+
+Array.prototype.shuffle = function() {
+    var input = this;
+     
+    for (var i = input.length-1; i >=0; i--) {
+     
+        var randomIndex = Math.floor(Math.random()*(i+1)); 
+        var itemAtIndex = input[randomIndex]; 
+         
+        input[randomIndex] = input[i]; 
+        input[i] = itemAtIndex;
+    }
+    return input;
+}
+
+Object.prototype.shuffle = function(){
+    let list = Object.keys(this);
+    let newDic = {};
+
+    list.shuffle();
+
+    for(item in list){
+        console.log(item);
     }
 
 }
