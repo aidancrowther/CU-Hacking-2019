@@ -7,7 +7,6 @@
 	<link rel="shortcut icon" href="assets/favicon.ico"/>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>   
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script src="client.js"></script>
 	<script async defer
@@ -18,25 +17,34 @@
 </head>
 <body>
 <div id="landingPage" class="page" style="visibility: visible;">
+	<br><br>
+	<h1 align="center">Hunt Royale</h1>
+	<br><br>
 	<button type="button" id="createButton" class="btn" onclick="goTo('#createGame')">
 		Create Game
-	</button><br>
+	</button><br><br>
 	<button type="button" id="joinButton" class="btn" onclick="goTo('#joinGame')">
 		Join Game
 	</button>
 </div>
 <div id="createGame" class="page">
-	<label for="newUsrName-createGame">Username</label><input type="text" id="newUsrName-createGame" class="textBox">
-	<label for="newRadiusTxt">Define Radius</label><input type="number" id="newRadiusTxt" class="textBox">
+	<br>
+
+	<br>
+	<label for="newUsrName-createGame">Username</label><br><input type="text" id="newUsrName-createGame" class="textBox">
+	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
 		<option value="kilometers">km</option>
 		<option value="feet">ft</option>
 		<option value="miles">mi</option>
 	</select>
+	<br>
+	<br>
 	<button type="button" id="createGameSubmitBtn" class="btn" onclick="createGame()">
 		Create Game
 	</button>
+
 </div>
 <div id="joinGame" class="page">
 	<label for="newUsrName-joinGame">Username</label><input type="text" id="newUsrName-joinGame" class="textBox">
@@ -54,14 +62,28 @@
 </div>
 <div id="playGame" class="page">
 
+
 	<div id="map"></div>
 
 	<style>
 		#map {
-			height: 99vh;
-			width: 99vh
+			margin: auto;
+			margin-top: 10px;
+			height: 96vw;
+			width: 96vw;
+			border-style: solid;
+			border-color: #4b7081;
+			border-width: thick
 		}
 	</style>
+
+
+	<p id="stillAlive" class="stillAliveFormat"> Still Alive: 100</p>
+	<br>
+	<p class="target">Target</p>
+	<button type="button" id="targetPerson" class="widebtn">
+		Big Mood
+	</button>
 
 </div>
 <div id="disclaimer" class="page">
