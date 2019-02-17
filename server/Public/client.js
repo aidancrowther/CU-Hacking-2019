@@ -47,6 +47,8 @@ function startGame()
 {
 
 	//TODO: write code to tell server that game is starting
+	
+	$("#startBtn").css("visibility", "inherit");
 	goTo("#playGame");
 
 }
