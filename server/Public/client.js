@@ -16,7 +16,7 @@ function createGame()
 
 	let data = {
 		'userName': name,
-		'location': [0, 0],
+		'location': pos,
 		'radius': radius
 	};
 	socket.emit('createGame', data);
@@ -32,7 +32,7 @@ function joinGame()
 
 	let data = {
 		'userName': name,
-		'location': [0, 0],
+		'location': pos,
 		'room': room
 	};
 	socket.emit('joinGame', data);
