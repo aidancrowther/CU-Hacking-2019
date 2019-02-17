@@ -11,7 +11,7 @@ let io = require('socket.io')(server);
 let ROOT = './Public';
 let PORT = 4000;
 
-const hunterDmgDist = 6; //min distance for hunter to deal damage to target
+const hunterDmgDist = 4; //min distance for hunter to deal damage to target
 const hunterDmg = 10; //damage dealt by a nearby hunter
 const OOBdmg = 5; //damage taken when out of bounds
 const startingHp = 100;
@@ -34,6 +34,8 @@ io.on('connection', function(client) {
 
         client['userName'] = data.userName;
         client['location'] = data.location;
+        client["hp"] = startingHp;
+        client["timeOutOfBounds"] = 0;
         
         let id = makeId();
         while(games[id]) id = makeId();
@@ -78,7 +80,12 @@ io.on('connection', function(client) {
         console.log(client.userName);
 
         id = Object.keys(client.rooms)[0];
-        io.to(id).emit('startGame');
+        let data = {
+            'location': games[id].origin,
+            'radius': games[id].radius
+        }
+        console.log(data);
+        io.to(id).emit('startGame', data);
 
         console.log(Object.keys(games[id].players));
 
@@ -94,7 +101,7 @@ io.on('connection', function(client) {
 
         broadcastHunters(games[id].players);
 
-        games[id]['loop'] = setInterval(gameLoop, 2000, id);
+        games[id]['loop'] = setInterval(gameLoop, 1000, id);
 
     });
 
