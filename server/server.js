@@ -185,7 +185,10 @@ function checkGameOver(){
         }else{//p2 wins
             data = p2[userName];
         }
-    } else return;
+    } else if(list.length == 0){
+        data = "NOBODY!!";
+    }
+    else return;
     
     io.to(id).emit("endGame", data);
 }
