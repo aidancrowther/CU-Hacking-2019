@@ -67,6 +67,21 @@ h1{
 	text-align: center
 }
 
+.backbtn
+{
+	height: 60px;
+    border: 1px;
+    background-color: var(--color-accent2);
+    color: var(--color-accent1);
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 150%;
+	width: 25%;
+    margin-left: 70%;
+	
+}
+
 .widebtn
 {
 	height: 60px;
