@@ -112,6 +112,9 @@
 		
 		let yourTarget = document.getElementById("targetPerson");
 		
+		let playersInLobby = document.getElementById("playersJoined");
+		textDiv.innerHTML = "Players in Lobby: " + "69";
+		
 	}
 
 	  

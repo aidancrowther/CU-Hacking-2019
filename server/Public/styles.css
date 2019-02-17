@@ -42,6 +42,15 @@ h1{
     padding-right: 20px;
 }
 
+.textBoxDescript
+{
+	color: var(--color-accent1);
+	font-size: 150%;
+	text-align: center
+	
+	
+}
+
 .stillAliveFormat
 {
 	color: var(--color-accent1);
@@ -54,8 +63,23 @@ h1{
 {
 	color: var(--color-accent2);
 	border: 1px;
-	font-size: 100%;
+	font-size: 125%;
 	text-align: center
+}
+
+.backbtn
+{
+	height: 60px;
+    border: 1px;
+    background-color: var(--color-accent2);
+    color: var(--color-accent1);
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 150%;
+	width: 25%;
+    margin-left: 70%;
+	
 }
 
 .widebtn

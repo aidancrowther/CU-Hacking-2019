@@ -19,7 +19,7 @@
 <div id="landingPage" class="page" style="visibility: visible;">
 	<br><br>
 	<h1 align="center">Hunt Royale</h1>
-	<br><br>
+	<br><br><br>
 	<button type="button" id="createButton" class="btn" onclick="goTo('#createGame')">
 		Create Game
 	</button><br><br>
@@ -28,32 +28,59 @@
 	</button>
 </div>
 <div id="createGame" class="page">
+	<br><br>
+	<h1 align="center">New Lobby</h1>
 	<br>
+	<div for="newUsrName-createGame" class="textBoxDescript">Username</div>
 
+	<input type="text" id="newUsrName-createGame" class="textBox">
 	<br>
-	<label for="newUsrName-createGame">Username</label><br><input type="text" id="newUsrName-createGame" class="textBox">
-	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
+	<br>
+	<div for="newRadiusTxt" class="textBoxDescript">Define Radius</div>
+
+	<input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
 		<option value="kilometers">km</option>
 		<option value="feet">ft</option>
 		<option value="miles">mi</option>
 	</select>
-	<br>
-	<br>
+
+	<br><br><br><br>
 	<button type="button" id="createGameSubmitBtn" class="btn" onclick="createGame()">
 		Create Game
+	</button>
+	<br><br><br>
+	<button type="button" class="backbtn" onclick="goTo('#landingPage')">
+		Back
 	</button>
 
 </div>
 <div id="joinGame" class="page">
-	<label for="newUsrName-joinGame">Username</label><input type="text" id="newUsrName-joinGame" class="textBox">
-	<label for="joinGameCodeTxt"></label><input type="text" id="joinGameCodeTxt" class="textBox"><br>
-	<button type="button" id="joinGameBtn" class="btn" onclick="joinGame()">
+	<br><br>
+	<h1 align="center">New Lobby</h1>
+	<br>
+	<div for="newUsrName-joinGame" class="textBoxDescript">Username</div>
+	<input type="text" id="newUsrName-joinGame" class="textBox">
+	<br>
+	<br>
+	<div for="joinGameCodeTxt" class="textBoxDescript">Game Code</div>
+	<input type="text" id="joinGameCodeTxt" class="textBox">
+	<br><br><br><br>
+	<button type="button" id="joinGameBtn" class="btn" onclick="joinGame($('#joinGameCodeTxt').val())">
 		Join Game
 	</button>
+	<br><br><br>
+	<button type="button" class="backbtn" onclick="goTo('#landingPage')">
+		Back
+	</button>
 </div>
+
 <div id="waitingRoom" class="page">
+	<br><br>
+	<h1 align="center">Waiting for Players</h1>
+	<br><br>
+	<p id="playersJoined" class="target"> Players in Lobby: 420</p>
 	<h1 id="roomCode"></h1>
 	<div id="usrList"></div>
 	<button type="button" id="startBtn" class="btn" onclick="startGame()">
@@ -61,6 +88,9 @@
 	</button>
 </div>
 <div id="playGame" class="page">
+<br>
+	<h1 id="stillAlive" align = "center">Alive: 100</h1>
+	<br>
 
 
 	<div id="map"></div>
@@ -68,7 +98,7 @@
 	<style>
 		#map {
 			margin: auto;
-			margin-top: 10px;
+			margin-top: margin;
 			height: 96vw;
 			width: 96vw;
 			border-style: solid;
@@ -77,8 +107,6 @@
 		}
 	</style>
 
-
-	<p id="stillAlive" class="stillAliveFormat"> Still Alive: 100</p>
 	<br>
 	<p class="target">Target</p>
 	<button type="button" id="targetPerson" class="widebtn">
