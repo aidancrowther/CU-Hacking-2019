@@ -169,7 +169,8 @@ function gameLoop(id){
     determineDamage(id);
     updatePlayers(id);
     broadcastHunters(games[id].players);
-    checkGameOver(id)
+    checkGameOver(id);
+
 }
 
 //check if the game has reached an end condition
@@ -186,9 +187,9 @@ function checkGameOver(){
         let p1 = players[list[0]];
         let p2 = players[list[1]];
         if(p1.hp > p2.hp || p1.kills > p2.kills){//p1 wins
-            data = p1[userName];
+            data = p1.userName;
         }else{//p2 wins
-            data = p2[userName];
+            data = p2.userName;
         }
     } else if(list.length == 0){
         data = "NOBODY!!";
