@@ -34,7 +34,7 @@ io.on('connection', function(client) {
 
         client['userName'] = data.userName;
         client['location'] = data.location;
-        client["hp"] = startingHp+100;
+        client["hp"] = startingHp;
         client['kills'] = 0;
         client["timeOutOfBounds"] = 0;
         
