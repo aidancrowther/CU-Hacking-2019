@@ -101,7 +101,9 @@ io.on('connection', function(client) {
 
         broadcastHunters(games[id].players);
 
-        games[id]['loop'] = setInterval(gameLoop, 1000, id);
+        setTimeout(() => {
+            games[id]['loop'] = setInterval(gameLoop, 1000, id);
+        }, 10000);
 
     });
 
@@ -162,11 +164,11 @@ function determineDamage(id){
         let hunter = list[(playerIndex+list.length-1)%list.length];
         
         //damage from hunter
-        if(!outsideRange(player["location"], hunter["location"], hunterDmgDist))
+        if(!outsideRange(player["location"], players[hunter]["location"], hunterDmgDist))
             takeDmg(player, hunterDmg);
         
         //out-if-bounds damage
-        if(outsideRange(player["location"], games["id"]["origin"], games[id].radius)){
+        if(outsideRange(player["location"], games[id]["origin"], games[id].radius)){
             if(player["timeOutOfBounds"]++ > 10)
             {
                 takeDmg(player, OOBdmg)
@@ -208,18 +210,15 @@ function updateGames(client){
         let playerList = Object.keys(games[id].players);
         let index = playerList.indexOf(client.userName);
 
-        console.log(games[id]['players'][client.userName]);
-        console.log(Object.keys(games[id].players));
         delete games[id]['players'][client.userName];
-        console.log(Object.keys(games[id].players));
     }
 
     if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
         clearInterval(games[id].loop);
         delete games[id];
+    } else {
+        if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
     }
-    
-    if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
 
 }
 
@@ -248,8 +247,8 @@ function broadcastHunters(players){
 }
 
 function getDist(p1, p2){
-    var distY = abs(p1[0] - p2[0]);
-    var distX = abs(p1[1] - p2[1]);
+    var distY = p1[0] - p2[0];
+    var distX = p1[1] - p2[1];
 
     return Math.sqrt(distX**2 + distY**2);
 }

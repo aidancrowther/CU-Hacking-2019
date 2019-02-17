@@ -84,6 +84,12 @@ function getRadius(){
 
 }
 
+function die()
+{
+	goTo("#deathMsg");
+	socket.emit("dead")
+}
+
 //Socket endpoint for receiving room code
 socket.on('setup', function(data){
 
@@ -152,7 +158,12 @@ socket.on('huntData', function(data){
 	
 });
 
-socket.on('updatePlayers', function(data){
+socket.on("updatePlayers", function(data){
+	
+	if(data <= 0){
+		die();
+	}
+	$("#currentHealth").text("Health: " + data);
 	
 });
 
