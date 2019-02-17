@@ -113,7 +113,7 @@ socket.on('joined', function(){
 
 });
 
-socket.on('startGame', function(){
+socket.on('startGame', function(data){
 
 	$("#startBtn").css("visibility", "inherit");
 	goTo("#playGame");
