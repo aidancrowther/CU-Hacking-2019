@@ -60,6 +60,8 @@ io.on('connection', function(client) {
 
     client.on('joinGame', function(data){
 
+        if(!games[data.room]) return;
+
         removeRooms(client);
 
         client.join(data.room);
@@ -73,23 +75,16 @@ io.on('connection', function(client) {
         client.emit('joined');
         io.to(data.room).emit('updateList', Object.keys(games[data.room]['players']));
 
-        console.log(games[data.room]['players']);
-
     });
 
     client.on('startGame', function(){
-
-        console.log(client.userName);
 
         id = Object.keys(client.rooms)[0];
         let data = {
             'location': games[id].origin,
             'radius': games[id].radius
         }
-        console.log(data);
         io.to(id).emit('startGame', data);
-
-        console.log(Object.keys(games[id].players));
 
         games[id].players = Object.keys(games[id].players)
         .map((key) => ({key, value: games[id].players[key]}))
@@ -98,8 +93,6 @@ io.on('connection', function(client) {
         acc[e.key] = e.value;
         return acc;
         }, {});
-
-        console.log(Object.keys(games[id].players));
 
         broadcastHunters(games[id].players);
 
@@ -111,7 +104,9 @@ io.on('connection', function(client) {
 
     client.on('updatePos', function(data){
 
-        client['location'] = data.location;
+        if(client.userName){
+            client['location'] = data;
+        }
 
     });
 
@@ -130,8 +125,7 @@ io.on('connection', function(client) {
 
         let hunter = list[(index+list.length-1)%list.length];
 
-        console.log(hunter);
-        console.log(games[id]['players'][hunter]);
+        console.log(games[id]['players'][hunter].kills);
 
         games[id]['players'][hunter]['kills'] += 1;
 
@@ -267,8 +261,17 @@ function broadcastHunters(players){
 }
 
 function getDist(p1, p2){
-    var distY = p1[0] - p2[0];
-    var distX = p1[1] - p2[1];
+    return measure(p1[0], p1[1], p2[0], p2[1]);
+}
 
-    return Math.sqrt(distX**2 + distY**2);
+function measure(lat1, lon1, lat2, lon2){  // generally used geo measurement function
+    var R = 6378.137; // Radius of earth in KM
+    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d * 1000; // meters
 }
