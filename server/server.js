@@ -169,7 +169,33 @@ function gameLoop(id){
     determineDamage(id);
     updatePlayers(id);
     broadcastHunters(games[id].players);
+    checkGameOver(id)
+}
 
+//check if the game has reached an end condition
+//if so: determine a winner and announce it to all players
+//then end the game loop
+//endif
+function checkGameOver(){
+    let players = games[id].players;
+    let list = Object.keys(players);
+    let data;
+    if(list.length == 1){
+        data = players[list[0]][userName];
+    }else if(list.length == 2){
+        let p1 = players[list[0]];
+        let p2 = players[list[1]];
+        if(p1.hp > p2.hp || p1.kills > p2.kills){//p1 wins
+            data = p1[userName];
+        }else{//p2 wins
+            data = p2[userName];
+        }
+    } else if(list.length == 0){
+        data = "NOBODY!!";
+    }
+    else return;
+    
+    io.to(id).emit("endGame", data);
 }
 
 // check if each player in a game should be taking damage
