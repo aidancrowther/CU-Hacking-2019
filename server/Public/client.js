@@ -116,6 +116,8 @@ socket.on('joined', function(){
 
 socket.on('startGame', function(data){
 
+	console.log(data);
+
 	$("#startBtn").css("visibility", "inherit");
 	goTo("#playGame");
 	
