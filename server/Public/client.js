@@ -135,6 +135,10 @@ socket.on('huntData', function(data){
 	
 });
 
+socket.on('updatePlayers', function(data){
+	
+});
+
 socket.on('alert', function(){
 	alert('hit');
 });

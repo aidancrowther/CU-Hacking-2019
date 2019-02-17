@@ -145,6 +145,7 @@ function gameLoop(id){
 
     determineDamage(id);
     updatePlayers(id);
+    broadcastHunters(games[id].players);
 
 }
 
@@ -174,6 +175,16 @@ function determineDamage(id){
         } else {
             player["timeOutOfBounds"] = 0;
         }
+    }
+
+}
+
+function updatePlayers(id){
+
+    let players = games[id].players;
+
+    for(let player in players){
+        players[player].emit('updatePlayers', players[player].hp);
     }
 
 }
