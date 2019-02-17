@@ -19,6 +19,9 @@ function createGame()
 		'location': pos,
 		'radius': radius
 	};
+	
+	map.setCenter({lat: pos[0], lng: pos[1]});
+	deathCircle.setCenter({lat: pos[0], lng: pos[1]});
 	socket.emit('createGame', data);
 
 	goTo("#waitingRoom")
