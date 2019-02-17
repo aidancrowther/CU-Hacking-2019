@@ -26,6 +26,11 @@
 	<button type="button" id="getCurrentLocationBtn" class="clickable">
 		Use Current Location
 	</button>
+	
+	<!--Remove this button, its a shrinker for testing purposes-->
+	<button type="button" id="chooseLocationBtn" class="clickable" onClick="shrinkCircle(100)">
+		Shrinkme
+	</button>
 	<br>
 	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
@@ -34,6 +39,11 @@
 		<option value="feet">ft</option>
 		<option value="miles">mi</option>
 	</select>
+	
+	<br>
+	<div id="text-area"></div>
+	
+
 
 </div>
 <div id="joinGame" class="page">

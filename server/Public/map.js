@@ -1,4 +1,5 @@
   var map;
+  var deathCircle;
   function initMap() {
     // Create the map object.
     map = new google.maps.Map(document.getElementById('map'), {
@@ -21,15 +22,15 @@
 	marker.setMap(map);
 	marker.setTitle('Tempe');
 	
-	var deathCircle = new google.maps.Circle({
-		strokeColor: '#FE7569',
+	deathCircle = new google.maps.Circle({
+		strokeColor: '#18CD5E',
 		strokeOpacity: 1,
 		strokeWeight: 2,
-		fillColor: 'transparent',
-		fillOpacity: 0.3,
+		fillColor: '#8EF2B5',
+		fillOpacity: 0.2,
 		map: map,
 		center: map.center,
-		radius:  1250
+		radius: 1250
 	});
 	
 	//NONE OF THIS WORKS
@@ -76,9 +77,31 @@
 	
 	*/
 	
-
-	
   }
+  
+	function shrinkCircle(meters){	  
+	 //speed of shrinking needs to be constant
+	 //2 meters per 50 milliseconds 
+		shrinkCircleRecursive((meters/2)); 
+	}
+	
+	function shrinkCircleRecursive(count){
+		
+		if(count < 0) return;
+		deathCircle.setRadius(deathCircle.radius - 2);
+		setTimeout(shrinkCircleRecursive, 50, count-1);
+	
+		//let textDiv = document.getElementById("text-area");
+		//textDiv.innerHTML = deathCircle.radius.toString();
+	
+	
+
+	/*
+		for (var i = 0; i < 10; ++i){
+			deathCircle.setRadius(deathCircle.radius - 10);
+		} 
+		*/
+	}
 
 	  
  
