@@ -157,7 +157,7 @@ function determineDamage(id){
     for(let playerKey in players){
         let player = players[playerKey];
         let playerIndex = list.indexOf(playerKey);
-        let hunter = list[(playerIndex+list.length-1)%length];
+        let hunter = list[(playerIndex+list.length-1)%list.length];
         
         //damage from hunter
         if(!outsideRange(player["location"], hunter["location"], hunterDmgDist))
