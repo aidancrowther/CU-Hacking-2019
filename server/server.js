@@ -11,6 +11,11 @@ let io = require('socket.io')(server);
 let ROOT = './Public';
 let PORT = 4000;
 
+const hunterDmgDist = 6; //min distance for hunter to deal damage to target
+const hunterDmg = 10; //damage dealt by a nearby hunter
+const OOBdmg = 5; //damage taken when out of bounds
+
+
 let games = {};
 
 app.use('/', express.static('Public'));
@@ -132,13 +137,37 @@ function gameLoop(id){
 
 }
 
+// check if each player in a game should be taking damage
+// either by their hunter or being outside the zone
 function determineDamage(id){
 
     let players = games[id].players;
 
-    for(player in players){
-
+    for(let index = 0; index < players.length; index++){
+        let player = players[index];
+        let hunter = players[index-1];
+        
+        //damage from hunter
+        if(!outsideRange(player.location, hunter.location, hunterDmgDist))
+            takeDmg(player, hunterDmg);
+        
+        //out-if-bounds damage
+        if(outsideRange(player.location, games[id].origin, games[id].radius)){
+            if(player.timeOutOfBounds++ > 10)
+            {
+                takeDmg(player, OOBdmg)
+            }
+            
+        } else {
+            player.timeOutOfBounds = 0;
+        }
     }
+
+}
+
+//TODO: cause <playr> to take <dmg> many damage
+function takeDmg(playr, dmg)
+{
 
 }
 
