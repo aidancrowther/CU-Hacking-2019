@@ -20,8 +20,6 @@ function createGame()
 		'radius': radius
 	};
 	
-	map.setCenter({lat: pos[0], lng: pos[1]});
-	deathCircle.setCenter({lat: pos[0], lng: pos[1]});
 	socket.emit('createGame', data);
 
 	goTo("#waitingRoom")
@@ -120,6 +118,12 @@ socket.on('startGame', function(data){
 
 	$("#startBtn").css("visibility", "inherit");
 	goTo("#playGame");
+	
+	alert(data.location[0]);
+	
+	map.setCenter({lat: data.location[0], lng: data.location[1]});
+	deathCircle.setCenter({lat: data.location[0], lng: data.location[1]});
+	deathCircle.setRadius(data.radius);
 
 });
 
