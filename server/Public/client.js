@@ -19,6 +19,8 @@ function createGame()
 		'radius': radius
 	};
 	socket.emit('createGame', data);
+
+	goTo("#waitingRoom")
 }
 
 function joinGame()
@@ -41,9 +43,7 @@ function startGame()
 {
 
 	//TODO: write code to tell server that game is starting
-	
-	$("#startBtn").css("visibility", "inherit");
-	goTo("#playGame");
+	socket.emit('startGame');
 
 }
 
@@ -85,7 +85,6 @@ function getRadius(){
 //Socket endpoint for receiving room code
 socket.on('setup', function(data){
 
-	//data is a string containing the room code
 	alert(data);
 
 	$("#roomCode").text(data);
@@ -110,4 +109,19 @@ socket.on('joined', function(){
 
 	goTo("#waitingRoom");
 
+});
+
+socket.on('startGame', function(){
+
+	$("#startBtn").css("visibility", "inherit");
+	goTo("#playGame");
+
+});
+
+socket.on('huntData', function(data){
+	console.log(data);
+})
+
+socket.on('alert', function(){
+	alert('hit');
 });
