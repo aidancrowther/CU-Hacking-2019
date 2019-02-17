@@ -7,6 +7,7 @@
 	<link rel="shortcut icon" href="assets/favicon.ico"/>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script src="client.js"></script>
 	<script async defer
@@ -38,7 +39,7 @@
 	<br>
 	<div for="newRadiusTxt" class="textBoxDescript">Define Radius</div>
 
-	<input type="text" id="newRadiusTxt" class="textBox">	
+	<input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
 		<option value="kilometers">km</option>
@@ -81,6 +82,8 @@
 	<h1 align="center">Waiting for Players</h1>
 	<br><br>
 	<p id="playersJoined" class="target"> Players in Lobby: 420</p>
+	<h1 id="roomCode"></h1>
+	<div id="usrList"></div>
 	<button type="button" id="startBtn" class="btn" onclick="startGame()">
 		Start!
 	</button>
@@ -89,10 +92,10 @@
 	
 </div>
 <div id="playGame" class="page">
-	<br>
+<br>
 	<h1 id="stillAlive" align = "center">Alive: 100</h1>
 	<br>
-	
+
 
 	<div id="map"></div>
 
@@ -107,7 +110,7 @@
 			border-width: thick
 		}
 	</style>
-	
+
 	<br>
 	<p class="target">Target</p>
 	<button type="button" id="targetPerson" class="widebtn">
