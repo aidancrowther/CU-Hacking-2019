@@ -161,8 +161,15 @@ socket.on("updatePlayers", function(data){
 	if(data <= 0){
 		die();
 	}
-	$("#currentHealth").text("Health: " + data);
+	$("#healthDisplay").text("HP: " + data);
 
+});
+
+socket.on("endGame", function(data){
+	
+	$("#winnerName").text(data);
+	
+	goTo("#winnerPage")
 });
 
 socket.on('alert', function(){

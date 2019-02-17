@@ -181,9 +181,15 @@ function checkGameOver(){
     let players = games[id].players;
     let list = Object.keys(players);
     if(list.length == 1){
-        let data = players[list[0]]
+        let data = players[list[0]][userName];
     }else if(list.length == 2){
-    if(p1.)
+        let p1 = players[list[0]];
+        let p2 = players[list[1]];
+        if(p1.hp > p2.hp || p1.kills > p2.kills){//p1 wins
+            data = p1[userName];
+        }else{//p2 wins
+            data = p2[userName];
+        }
     } else return;
     
     io.to(id).emit("endGame", data);
