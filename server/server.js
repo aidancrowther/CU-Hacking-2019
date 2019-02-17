@@ -39,7 +39,7 @@ io.on('connection', function(client) {
         while(games[id]) id = makeId();
         
         games[id] = {
-            'origin': [0, 0],
+            'origin': data.location,
             'radius': data.radius,
             'startTime': new Date().getTime(),
             'players': players

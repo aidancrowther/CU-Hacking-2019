@@ -28,6 +28,13 @@ h1{
 	text-shadow: 3px 2px white
 }
 
+h2{
+	color: var(--color-accent2);
+	font-family: "Impact";
+	font-size: 50px;
+	text-shadow: 3px 2px white
+}
+
 .textBox, .btn
 {
     width: 60%;

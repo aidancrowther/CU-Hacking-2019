@@ -1,5 +1,6 @@
 let socket = io.connect('https://localhost:4000');
 
+
 function goTo(destPage)
 {
 	$(".page").css("visibility", "hidden");
@@ -15,7 +16,7 @@ function createGame()
 
 	let data = {
 		'userName': name,
-		'location': [0, 0],
+		'location': pos,
 		'radius': radius
 	};
 	socket.emit('createGame', data);
@@ -31,7 +32,7 @@ function joinGame()
 
 	let data = {
 		'userName': name,
-		'location': [0, 0],
+		'location': pos,
 		'room': room
 	};
 	socket.emit('joinGame', data);
@@ -91,6 +92,7 @@ socket.on('setup', function(data){
 	
 	$("#startBtn").css("visibility", "visible");
 	goTo("#waitingRoom");
+	
 
 });
 
@@ -120,8 +122,18 @@ socket.on('startGame', function(){
 
 socket.on('huntData', function(data){
 	console.log(data);
+	//set button to display name of your target
+	document.getElementById('targetPerson').innerHTML = data.targetname;
+	//set target circle to display on your target location
+	targetCircle.setCenter({lat: data.targetLoc[0], lng: data.targetLoc[1]});
+	
+	
 });
 
 socket.on('alert', function(){
 	alert('hit');
 });
+
+
+
+
