@@ -1,5 +1,6 @@
 let socket = io.connect(window.location.origin);
 let numPlayers = 0;
+let getPosLoop;
 
 function goTo(destPage)
 {
@@ -87,6 +88,7 @@ function getRadius(){
 function die()
 {
 	goTo("#deathMsg");
+	clearInterval(getPosLoop);
 	socket.emit("die");
 }
 
@@ -136,7 +138,7 @@ socket.on('startGame', function(data){
 
 	console.log(data);
 
-	setInterval(getPos, 2000);
+	getPosLoop = setInterval(getPos, 2000);
 
 	$("#startBtn").css("visibility", "inherit");
 	goTo("#playGame");
@@ -165,7 +167,6 @@ socket.on("updatePlayers", function(data){
 });
 
 socket.on("endGame", function(data){
-	
 	$("#winnerName").text(data);
 	
 	goTo("#winnerPage")
