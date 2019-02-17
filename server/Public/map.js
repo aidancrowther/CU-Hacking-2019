@@ -105,6 +105,7 @@
 		} 
 		*/
 	}
+	/*
 	
 	function updateData(){
 		let leftAlive = document.getElementById("stillAlive");
@@ -116,6 +117,7 @@
 		textDiv.innerHTML = "Players in Lobby: " + "69";
 		
 	}
+	*/
 
 	  
  
