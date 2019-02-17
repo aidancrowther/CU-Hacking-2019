@@ -178,21 +178,6 @@ function broadcastHunters(players){
 
 }
 
-function shuffleObj(obj){
-
-    let list = Object.keys(obj);
-    let temp = {};
-
-    list.shuffle();
-
-    for(entry in list){
-        temp[list[entry]] = obj[list[entry]];
-    }
-
-    return temp;
-
-}
-
 function getDist(p1, p2){
     var distY = abs(p1[0] - p2[0]);
     var distX = abs(p1[1] - p2[1]);
