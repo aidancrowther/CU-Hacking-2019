@@ -132,6 +132,16 @@ function gameLoop(id){
 
 }
 
+function determineDamage(id){
+
+    let players = games[id].players;
+
+    for(player in players){
+        
+    }
+
+}
+
 function updateGames(client){
 
     let id = client.gameID;
