@@ -78,7 +78,11 @@ io.on('connection', function(client) {
         console.log(client.userName);
 
         id = Object.keys(client.rooms)[0];
-        io.to(id).emit('startGame', games[id].location);
+        let data = {
+            'location': games[id].location,
+            'radius': games[id].radius
+        }
+        io.to(id).emit('startGame', data);
 
         console.log(Object.keys(games[id].players));
 
