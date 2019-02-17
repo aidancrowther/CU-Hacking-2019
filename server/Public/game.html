@@ -25,6 +25,12 @@
 	</button>
 </div>
 <div id="createGame" class="page">
+	<button type="button" id="chooseLocationBtn" class="clickable">
+		Choose Location
+	</button>
+	<button type="button" id="getCurrentLocationBtn" class="clickable">
+		Use Current Location
+	</button>
 	<label for="newRadiusTxt">Define Radius</label><input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
@@ -35,6 +41,7 @@
 	<button type="button" id="createGameSubmitBtn" class="btn" onclick="createGame()">
 		Create Game
 	</button>
+
 </div>
 <div id="joinGame" class="page">
 	<label for="joinGameCodeTxt"></label><input type="text" id="joinGameCodeTxt" class="textBox"><br>
