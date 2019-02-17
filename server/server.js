@@ -137,8 +137,13 @@ function determineDamage(id){
     let players = games[id].players;
 
     for(player in players){
-        
+
     }
+
+}
+
+//Return whether or not a player is outside the boundary
+function outsideRange(playerPos, origin){
 
 }
 
