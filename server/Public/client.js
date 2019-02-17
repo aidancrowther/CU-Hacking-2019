@@ -120,7 +120,7 @@ socket.on('startGame', function(){
 
 socket.on('huntData', function(data){
 	console.log(data);
-})
+});
 
 socket.on('alert', function(){
 	alert('hit');
