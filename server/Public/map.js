@@ -3,7 +3,7 @@
   function initMap() {
     // Create the map object.
     map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 15,
+		zoom: 14,
 		scaleControl: true
 		
 		
@@ -13,7 +13,7 @@
 	
 	var diameter;
 	
-	map.setZoom(15);
+	map.setZoom(14);
     map.setCenter({lat: 33.4255, lng: -111.9400});
 	
 	var marker = new google.maps.Marker();
@@ -108,12 +108,16 @@
 	
 	function updateData(){
 		let leftAlive = document.getElementById("stillAlive");
-		textDiv.innerHTML = "Still Alive: " + "100";
+		leftAlive.innerHTML = "Still Alive: " + "100";
 		
 		let yourTarget = document.getElementById("targetPerson");
 		
 		let playersInLobby = document.getElementById("playersJoined");
-		textDiv.innerHTML = "Players in Lobby: " + "69";
+		playerInLobby.innerHTML = "Players in Lobby: " + "69";
+		
+		let listOfPlayers = document.getElementById("playerList");
+		listOfPlayers.innerHTML = "playername" + " <br> "
+		
 		
 	}
 
