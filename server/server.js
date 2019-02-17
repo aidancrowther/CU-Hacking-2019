@@ -14,7 +14,7 @@ let PORT = 4000;
 
 const hunterDmgDist = 4; //min distance for hunter to deal damage to target
 const hunterDmg = 10; //damage dealt by a nearby hunter
-const OOBdmg = 5; //damage taken when out of bounds
+const OOBdmg = 10; //damage taken when out of bounds
 const startingHp = 100;
 
 
@@ -220,7 +220,7 @@ function determineDamage(id){
         if(outsideRange(player["location"], games[id]["origin"], games[id].radius)){
             if(player["timeOutOfBounds"]++ > 10)
             {
-                takeDmg(player, OOBdmg)
+                takeDmg(player, OOBdmg);
             }
             
         } else {
