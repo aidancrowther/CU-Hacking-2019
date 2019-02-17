@@ -1,5 +1,4 @@
 let socket = io.connect('https://localhost:4000');
-let hostUsr = false;
 
 function goTo(destPage)
 {
@@ -10,8 +9,6 @@ function goTo(destPage)
 
 function createGame()
 {
-
-	hostUsr = true;
 	$("#startBtn").css("visibility", "visible");
 
 	let name = $('#newUsrName-createGame').val();
@@ -23,8 +20,6 @@ function createGame()
 		'radius': radius
 	};
 	socket.emit('createGame', data);
-
-	goTo("#waitingRoom")
 }
 
 function joinGame()
@@ -90,7 +85,7 @@ function getRadius(){
 socket.on('setup', function(data){
 
 	alert(data);
-	
+	$("#roomCode").text(data)
 	goTo("#waitingRoom");
 
 });
@@ -117,6 +112,10 @@ socket.on('startGame', function(){
 	goTo("#playGame");
 
 });
+
+socket.on('huntData', function(data){
+	console.log(data);
+})
 
 socket.on('alert', function(){
 	alert('hit');

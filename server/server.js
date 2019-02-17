@@ -71,9 +71,20 @@ io.on('connection', function(client) {
 
         id = Object.keys(client.rooms)[0];
         io.to(id).emit('startGame');
-        games[id]['players'].shuffle();
 
-        broadcastHunters(id);
+        console.log(Object.keys(games[id].players));
+
+        games[id].players = Object.keys(games[id].players)
+        .map((key) => ({key, value: games[id].players[key]}))
+        .sort((a, b) => b.key.localeCompare(a.key))
+        .reduce((acc, e) => {
+        acc[e.key] = e.value;
+        return acc;
+        }, {});
+
+        console.log(Object.keys(games[id].players));
+
+        broadcastHunters(games[id].players);
 
         games[id]['loop'] = setInterval(gameLoop, 2000, id);
 
@@ -143,40 +154,48 @@ function updateGames(client){
 
 }
 
-function broadcastHunters(){
+function broadcastHunters(players){
 
-    let players = io.sockets.adapter.rooms[id].sockets;
-    let list = games[id].players;
+    let list = Object.keys(players);
 
     for(player in players){
-        console.log(player);
-        io.to('${'+player+'}').emit('alert');
+
+        let index = list.indexOf(player);
+        let target = index+1;
+        let hunter = index-1;
+
+        if(target >= list.length) target = 0;
+        if(hunter < 0) hunter = list.length-1;
+
+        data = {
+            'targetname': list[target],
+            'targetLoc': players[list[target]].location,
+            'hunterName': list[hunter]
+        }
+
+        players[player].emit('huntData', data);
     }
 
 }
 
-Array.prototype.shuffle = function() {
-    var input = this;
-     
-    for (var i = input.length-1; i >=0; i--) {
-     
-        var randomIndex = Math.floor(Math.random()*(i+1)); 
-        var itemAtIndex = input[randomIndex]; 
-         
-        input[randomIndex] = input[i]; 
-        input[i] = itemAtIndex;
-    }
-    return input;
-}
+function shuffleObj(obj){
 
-Object.prototype.shuffle = function(){
-    let list = Object.keys(this);
-    let newDic = {};
+    let list = Object.keys(obj);
+    let temp = {};
 
     list.shuffle();
 
-    for(item in list){
-        console.log(item);
+    for(entry in list){
+        temp[list[entry]] = obj[list[entry]];
     }
 
+    return temp;
+
+}
+
+function getDist(p1, p2){
+    var distY = abs(p1[0] - p2[0]);
+    var distX = abs(p1[1] - p2[1]);
+
+    return Math.sqrt(distX**2 + distY**2);
 }
