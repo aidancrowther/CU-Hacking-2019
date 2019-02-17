@@ -6,6 +6,7 @@
 		zoom: 15,
 		scaleControl: true
 		
+		
 		//set default center
 	
 	});
@@ -32,6 +33,8 @@
 		center: map.center,
 		radius: 1250
 	});
+	
+
 	
 	//NONE OF THIS WORKS
 	/*
@@ -102,16 +105,25 @@
 		} 
 		*/
 	}
+	
+	function updateData(){
+		let leftAlive = document.getElementById("stillAlive");
+		textDiv.innerHTML = "Still Alive: " + "100";
+		
+		let yourTarget = document.getElementById("targetPerson");
+		
+		let playersInLobby = document.getElementById("playersJoined");
+		textDiv.innerHTML = "Players in Lobby: " + "69";
+		
+	}
 
 	setInterval(updateLoc, 10000);
 
 	function updateLoc(){
-		console.log("Beep");
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var lat = position.coords.latitude;
 			var lon = position.coords.longitude;
 	
-			alert(lat+" "+lon);
+			//alert(lat+" "+lon);
 		});
-		console.log("Boop");
 	}
