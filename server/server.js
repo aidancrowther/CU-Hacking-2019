@@ -174,8 +174,9 @@ function gameLoop(id){
 function checkGameOver(){
     let players = games[id].players;
     let list = Object.keys(players);
+    let data;
     if(list.length == 1){
-        let data = players[list[0]][userName];
+        data = players[list[0]][userName];
     }else if(list.length == 2){
         let p1 = players[list[0]];
         let p2 = players[list[1]];
