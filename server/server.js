@@ -179,17 +179,21 @@ function checkGameOver(){
     let players = games[id].players;
     let list = Object.keys(players);
     let data;
-    if(list.length == 1){
+    if(list.length == 1){ //only player left wins
         data = players[list[0]].userName;
-    }else if(list.length == 2){
+    }else if(list.length == 2){ //best player of remaining two wins
         let p1 = players[list[0]];
         let p2 = players[list[1]];
-        if(p1.hp > p2.hp || p1.kills > p2.kills){//p1 wins
+        if(p1.hp > p2.hp){
             data = p1.userName;
-        }else{//p2 wins
+        } else if(p2.hp > p1.hp){
+            data = p2.userName;
+        } else if(p1.kills > p2.kills){
+            data = p1.userName;
+        } else{
             data = p2.userName;
         }
-    } else if(list.length == 0){
+    } else if(list.length == 0){ //everyone is dead, NOBODY wins
         data = "NOBODY!!";
     }
     else return;
