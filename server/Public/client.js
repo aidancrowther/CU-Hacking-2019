@@ -2,15 +2,14 @@ let socket = io.connect(window.location.origin);
 let numPlayers = 0;
 let getPosLoop;
 
-function goTo(destPage)
-{
+// change which html page is visible to the user
+function goTo(destPage){
 	$(".page").css("visibility", "hidden");
 	$(destPage).css("visibility", "visible");
-	
 }
 
-function createGame()
-{
+//sends the client's mane, position and selected radius to the server
+function createGame(){
 	
 	let name = $('#newUsrName-createGame').val();
 	let radius = getRadius();
@@ -26,8 +25,8 @@ function createGame()
 	goTo("#waitingRoom")
 }
 
-function joinGame()
-{
+//allows a player to join a game by the room code they provide
+function joinGame(){
 
 	let room = $('#joinGameCodeTxt').val();
 	let name = $('#newUsrName-joinGame').val();
@@ -42,16 +41,13 @@ function joinGame()
 	$("#roomCode").text(room);
 }
 
-function startGame()
-{
-
-	//TODO: write code to tell server that game is starting
+// notifies the server that the game is ready to be started
+function startGame(){
 	socket.emit('startGame');
-
 }
 
-function setUsrList(usrList)
-{
+//update list of players in-game
+function setUsrList(usrList){
 	$("#usrList").empty();
 	for(let index = 0; index < usrList.length; index++)
 	{
@@ -59,6 +55,7 @@ function setUsrList(usrList)
 	}
 }
 
+//returns the selected radius, converted into meters
 function getRadius(){
 
 	let radius = parseInt($('#newRadiusTxt').val(), 10);
@@ -85,8 +82,8 @@ function getRadius(){
 
 }
 
-function die()
-{
+//notifies the server that the player's health is <= 0 and removes that player from the game
+function die(){
 	goTo("#deathMsg");
 	clearInterval(getPosLoop);
 	socket.emit("die");
@@ -134,6 +131,7 @@ socket.on('joined', function(){
 
 });
 
+//socket endpoint for a game to be started
 socket.on('startGame', function(data){
 
 	console.log(data);
@@ -149,6 +147,7 @@ socket.on('startGame', function(data){
 
 });
 
+//socket endpoint for receiving game state info
 socket.on('huntData', function(data){
 	console.log(data);
 	//set button to display name of your target
@@ -157,6 +156,7 @@ socket.on('huntData', function(data){
 	targetCircle.setCenter({lat: data.targetLoc[0], lng: data.targetLoc[1]});
 });
 
+//socket endpoint for receiving updated hp amount
 socket.on("updatePlayers", function(data){
 	
 	if(data <= 0){
@@ -166,6 +166,7 @@ socket.on("updatePlayers", function(data){
 
 });
 
+//socket endpoint for the game ending
 socket.on("endGame", function(data){
 	$("#winnerName").text(data);
 	

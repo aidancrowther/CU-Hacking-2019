@@ -1,5 +1,9 @@
 const express = require('express');
 const fs = require('fs');
+const hunterDmgDist = 4; //min distance for hunter to deal damage to target
+const hunterDmg = 10; //damage dealt by a nearby hunter
+const OOBdmg = 10; //damage taken when out of bounds
+const startingHp = 100;
 
 let app = express();
 let server = require('https').createServer({
@@ -11,12 +15,6 @@ let io = require('socket.io')(server);
 
 let ROOT = './Public';
 let PORT = 4000;
-
-const hunterDmgDist = 4; //min distance for hunter to deal damage to target
-const hunterDmg = 10; //damage dealt by a nearby hunter
-const OOBdmg = 10; //damage taken when out of bounds
-const startingHp = 100;
-
 
 let games = {};
 
