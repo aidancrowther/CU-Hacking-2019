@@ -47,6 +47,7 @@ io.on('connection', function(client) {
         games[id] = {
             'origin': data.location,
             'radius': data.radius,
+            'startDelay': data.startDelay,
             'startTime': new Date().getTime(),
             'players': players
         }
@@ -85,8 +86,9 @@ io.on('connection', function(client) {
         id = Object.keys(client.rooms)[0];
         let data = {
             'location': games[id].origin,
-            'radius': games[id].radius
-        }
+            'radius': games[id].radius,
+            'delay': games[id].startDelay
+        };
         io.to(id).emit('startGame', data);
 
         games[id].players = Object.keys(games[id].players)
@@ -101,7 +103,7 @@ io.on('connection', function(client) {
 
         setTimeout(() => {
             games[id]['loop'] = setInterval(gameLoop, 1000, id);
-        }, 10000);
+        }, games[id].startDelay);
 
     });
 
@@ -172,9 +174,8 @@ function gameLoop(id){
 }
 
 //check if the game has reached an end condition
-//if so: determine a winner and announce it to all players
-//then end the game loop
-//endif
+//if so: determine a winner and announce it to all players and
+// end the game loop
 function checkGameOver(){
     let players = games[id].players;
     let list = Object.keys(players);

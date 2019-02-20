@@ -12,13 +12,18 @@ function goTo(destPage){
 function createGame(){
 	
 	let name = $('#newUsrName-createGame').val();
+	let delay = parseInt($("#newTimeDelay-createGame").val(), 10)*1000;
 	let radius = getRadius();
 
 	let data = {
 		'userName': name,
 		'location': pos,
+		'startDelay': delay,
 		'radius': radius
 	};
+	
+	console.log('Info sent at creation:');
+	console.log(data);
 	
 	socket.emit('createGame', data);
 
@@ -84,7 +89,7 @@ function getRadius(){
 
 //notifies the server that the player's health is <= 0 and removes that player from the game
 function die(){
-	goTo("#deathMsg");
+	goTo("#deathPage");
 	clearInterval(getPosLoop);
 	socket.emit("die");
 }

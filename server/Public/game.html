@@ -27,10 +27,10 @@
 	<br><br>
 	<h1 align="center">Hunt Royale</h1>
 	<br><br><br>
-	<button type="button" id="createButton" class="btn" onclick="goTo('#createGame'); $('#disclaimer').css('visibility', 'visible')">
+	<button type="button" id="createButton" class="btn" onclick="goTo('#createGame')">
 		Create Game
 	</button><br><br>
-	<button type="button" id="joinButton" class="btn" onclick="goTo('#joinGame'); $('#disclaimer').css('visibility', 'visible')">
+	<button type="button" id="joinButton" class="btn" onclick="goTo('#joinGame')">
 		Join Game
 	</button>
 </div>
@@ -38,13 +38,18 @@
 	<br><br>
 	<h1 align="center">New Lobby</h1>
 	<br>
-	<div for="newUsrName-createGame" class="textBoxDescript">Username</div>
 
+	<div for="newUsrName-createGame" class="textBoxDescript">Username</div>
 	<input type="text" id="newUsrName-createGame" class="textBox">
 	<br>
 	<br>
-	<div for="newRadiusTxt" class="textBoxDescript">Define Radius</div>
 
+	<div for="newTimeDelay-createGame" class="textBoxDescript">Time Delay (s)</div>
+	<input type="text" id="newTimeDelay-createGame" class="textBox">
+	<br>
+	<br>
+
+	<div for="newRadiusTxt" class="textBoxDescript">Define Radius</div>
 	<input type="text" id="newRadiusTxt" class="textBox">
 	<label for="distanceUnitMenu"></label><select id="distanceUnitMenu">
 		<option value="meters">m</option>
@@ -130,7 +135,7 @@
 		Big Mood
 	</button>
 
-</div>	
+</div>
 <div id="winnerPage" class="page">
 	<br><br>
 	<h1 align="center">WINNER:</h1>
