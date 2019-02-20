@@ -48,7 +48,6 @@ io.on('connection', function(client) {
             'origin': data.location,
             'radius': data.radius,
             'startDelay': data.startDelay,
-            'startTime': new Date().getTime(),
             'players': players
         }
 
@@ -84,10 +83,13 @@ io.on('connection', function(client) {
     client.on('startGame', function(){
 
         id = Object.keys(client.rooms)[0];
+        games[id].startTime = new Date().getTime();
         let data = {
             'location': games[id].origin,
             'radius': games[id].radius,
-            'delay': games[id].startDelay
+            'delay': games[id].startDelay,
+            'startTime': games[id].startTime
+    
         };
         io.to(id).emit('startGame', data);
 

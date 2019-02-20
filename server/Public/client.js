@@ -60,6 +60,24 @@ function setUsrList(usrList){
 	}
 }
 
+//display a timer that runs for the specified time
+function startTimer(milliseconds, nextPage){
+	let timer = milliseconds/10;
+	$("#timerDisplay").text(timer/100);
+	
+	let countdownLoop = setInterval(function(){// decrement timer every second
+		timer -= 1;
+		$("#timerDisplay").text((timer/100).toFixed(2));
+	}, 10);
+	
+	goTo("#countdownPage")
+	
+	setTimeout(()=>{// end timer and go to nextPage
+		clearInterval(countdownLoop);
+		goTo(nextPage);
+	}, milliseconds);
+}
+
 //returns the selected radius, converted into meters
 function getRadius(){
 
@@ -139,12 +157,12 @@ socket.on('joined', function(){
 //socket endpoint for a game to be started
 socket.on('startGame', function(data){
 
-	console.log(data);
+	let delay = data.delay;
 
+	startTimer(delay, "#playGame");
+	
 	getPosLoop = setInterval(getPos, 2000);
-
 	$("#startBtn").css("visibility", "inherit");
-	goTo("#playGame");
 	
 	map.setCenter({lat: data.location[0], lng: data.location[1]});
 	deathCircle.setCenter({lat: data.location[0], lng: data.location[1]});
