@@ -1,5 +1,9 @@
 const express = require('express');
 const fs = require('fs');
+const hunterDmgDist = 4; //min distance for hunter to deal damage to target
+const hunterDmg = 10; //damage dealt by a nearby hunter
+const OOBdmg = 10; //damage taken when out of bounds
+const startingHp = 100;
 
 let app = express();
 let server = require('https').createServer({
@@ -11,12 +15,6 @@ let io = require('socket.io')(server);
 
 let ROOT = './Public';
 let PORT = 4000;
-
-const hunterDmgDist = 4; //min distance for hunter to deal damage to target
-const hunterDmg = 10; //damage dealt by a nearby hunter
-const OOBdmg = 5; //damage taken when out of bounds
-const startingHp = 100;
-
 
 let games = {};
 
@@ -49,7 +47,7 @@ io.on('connection', function(client) {
         games[id] = {
             'origin': data.location,
             'radius': data.radius,
-            'startTime': new Date().getTime(),
+            'startDelay': data.startDelay,
             'players': players
         }
 
@@ -85,10 +83,14 @@ io.on('connection', function(client) {
     client.on('startGame', function(){
 
         id = Object.keys(client.rooms)[0];
+        games[id].startTime = new Date().getTime();
         let data = {
             'location': games[id].origin,
-            'radius': games[id].radius
-        }
+            'radius': games[id].radius,
+            'delay': games[id].startDelay,
+            'startTime': games[id].startTime
+    
+        };
         io.to(id).emit('startGame', data);
 
         games[id].players = Object.keys(games[id].players)
@@ -103,7 +105,7 @@ io.on('connection', function(client) {
 
         setTimeout(() => {
             games[id]['loop'] = setInterval(gameLoop, 1000, id);
-        }, 10000);
+        }, games[id].startDelay);
 
     });
 
@@ -174,28 +176,32 @@ function gameLoop(id){
 }
 
 //check if the game has reached an end condition
-//if so: determine a winner and announce it to all players
-//then end the game loop
-//endif
+//if so: determine a winner and announce it to all players and
+// end the game loop
 function checkGameOver(){
     let players = games[id].players;
     let list = Object.keys(players);
     let data;
-    if(list.length == 1){
+    if(list.length == 1){ //only player left wins
         data = players[list[0]].userName;
-    }else if(list.length == 2){
+    }else if(list.length == 2){ //best player of remaining two wins
         let p1 = players[list[0]];
         let p2 = players[list[1]];
-        if(p1.hp > p2.hp || p1.kills > p2.kills){//p1 wins
+        if(p1.hp > p2.hp){
             data = p1.userName;
-        }else{//p2 wins
+        } else if(p2.hp > p1.hp){
+            data = p2.userName;
+        } else if(p1.kills > p2.kills){
+            data = p1.userName;
+        } else{
             data = p2.userName;
         }
-    } else if(list.length == 0){
+    } else if(list.length == 0){ //everyone is dead, NOBODY wins
         data = "NOBODY!!";
     }
     else return;
     
+    clearInterval(games[id]["loop"]);
     io.to(id).emit("endGame", data);
 }
 
@@ -219,7 +225,7 @@ function determineDamage(id){
         if(outsideRange(player["location"], games[id]["origin"], games[id].radius)){
             if(player["timeOutOfBounds"]++ > 10)
             {
-                takeDmg(player, OOBdmg)
+                takeDmg(player, OOBdmg);
             }
             
         } else {

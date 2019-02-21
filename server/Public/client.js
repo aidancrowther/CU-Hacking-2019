@@ -1,32 +1,37 @@
 let socket = io.connect(window.location.origin);
 let numPlayers = 0;
+let getPosLoop;
 
-function goTo(destPage)
-{
+// change which html page is visible to the user
+function goTo(destPage){
 	$(".page").css("visibility", "hidden");
 	$(destPage).css("visibility", "visible");
-	
 }
 
-function createGame()
-{
+//sends the client's mane, position and selected radius to the server
+function createGame(){
 	
 	let name = $('#newUsrName-createGame').val();
+	let delay = parseInt($("#newTimeDelay-createGame").val(), 10)*1000;
 	let radius = getRadius();
 
 	let data = {
 		'userName': name,
 		'location': pos,
+		'startDelay': delay,
 		'radius': radius
 	};
+	
+	console.log('Info sent at creation:');
+	console.log(data);
 	
 	socket.emit('createGame', data);
 
 	goTo("#waitingRoom")
 }
 
-function joinGame()
-{
+//allows a player to join a game by the room code they provide
+function joinGame(){
 
 	let room = $('#joinGameCodeTxt').val();
 	let name = $('#newUsrName-joinGame').val();
@@ -41,16 +46,13 @@ function joinGame()
 	$("#roomCode").text(room);
 }
 
-function startGame()
-{
-
-	//TODO: write code to tell server that game is starting
+// notifies the server that the game is ready to be started
+function startGame(){
 	socket.emit('startGame');
-
 }
 
-function setUsrList(usrList)
-{
+//update list of players in-game
+function setUsrList(usrList){
 	$("#usrList").empty();
 	for(let index = 0; index < usrList.length; index++)
 	{
@@ -58,6 +60,25 @@ function setUsrList(usrList)
 	}
 }
 
+//display a timer that runs for the specified time
+function startTimer(milliseconds, nextPage){
+	let timer = milliseconds/10;
+	$("#timerDisplay").text(timer/100);
+	
+	let countdownLoop = setInterval(function(){// decrement timer every second
+		timer -= 1;
+		$("#timerDisplay").text((timer/100).toFixed(2));
+	}, 10);
+	
+	goTo("#countdownPage")
+	
+	setTimeout(()=>{// end timer and go to nextPage
+		clearInterval(countdownLoop);
+		goTo(nextPage);
+	}, milliseconds);
+}
+
+//returns the selected radius, converted into meters
 function getRadius(){
 
 	let radius = parseInt($('#newRadiusTxt').val(), 10);
@@ -84,9 +105,10 @@ function getRadius(){
 
 }
 
-function die()
-{
-	goTo("#deathMsg");
+//notifies the server that the player's health is <= 0 and removes that player from the game
+function die(){
+	goTo("#deathPage");
+	clearInterval(getPosLoop);
 	socket.emit("die");
 }
 
@@ -132,14 +154,15 @@ socket.on('joined', function(){
 
 });
 
+//socket endpoint for a game to be started
 socket.on('startGame', function(data){
 
-	console.log(data);
+	let delay = data.delay;
 
-	setInterval(getPos, 2000);
-
+	startTimer(delay, "#playGame");
+	
+	getPosLoop = setInterval(getPos, 2000);
 	$("#startBtn").css("visibility", "inherit");
-	goTo("#playGame");
 	
 	map.setCenter({lat: data.location[0], lng: data.location[1]});
 	deathCircle.setCenter({lat: data.location[0], lng: data.location[1]});
@@ -147,6 +170,7 @@ socket.on('startGame', function(data){
 
 });
 
+//socket endpoint for receiving game state info
 socket.on('huntData', function(data){
 	console.log(data);
 	//set button to display name of your target
@@ -155,6 +179,7 @@ socket.on('huntData', function(data){
 	targetCircle.setCenter({lat: data.targetLoc[0], lng: data.targetLoc[1]});
 });
 
+//socket endpoint for receiving updated hp amount
 socket.on("updatePlayers", function(data){
 	
 	if(data <= 0){
@@ -164,8 +189,8 @@ socket.on("updatePlayers", function(data){
 
 });
 
+//socket endpoint for the game ending
 socket.on("endGame", function(data){
-	
 	$("#winnerName").text(data);
 	
 	goTo("#winnerPage")
