@@ -3,8 +3,8 @@ const fs = require('fs');
 
 let app = express();
 let server = require('https').createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
+    key: fs.readFileSync('./certs/private.key'),
+    cert: fs.readFileSync('./certs/certificate.crt')
 }, app);
 //let server = require('http').createServer(app);
 let io = require('socket.io')(server);
