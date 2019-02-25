@@ -26,8 +26,6 @@ function createGame(){
 	console.log(data);
 	
 	socket.emit('createGame', data);
-
-	goTo("#waitingRoom")
 }
 
 //allows a player to join a game by the room code they provide
@@ -62,20 +60,21 @@ function setUsrList(usrList){
 
 //display a timer that runs for the specified time
 function startTimer(milliseconds, nextPage){
-	let timer = milliseconds/10;
-	$("#timerDisplay").text(timer/100);
+	let endTime = new Date().getTime() + milliseconds; //time when function ends (ms)
 	
-	let countdownLoop = setInterval(function(){// decrement timer every second
-		timer -= 1;
-		$("#timerDisplay").text((timer/100).toFixed(2));
-	}, 10);
+	//refresh timer every 0.1 seconds
+	let countdownLoop = setInterval(function(){
+		let currTime = endTime - new Date().getTime(); //time until function ends (ms)
+		$("#timerDisplay").text((currTime/1000).toFixed(1)); //refresh timer
+	}, 100);
 	
-	goTo("#countdownPage")
-	
-	setTimeout(()=>{// end timer and go to nextPage
+	//end timer and go to nextPage
+	setTimeout(()=>{
 		clearInterval(countdownLoop);
 		goTo(nextPage);
 	}, milliseconds);
+	
+	goTo("#countdownPage")
 }
 
 //returns the selected radius, converted into meters
