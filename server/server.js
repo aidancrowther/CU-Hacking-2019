@@ -18,13 +18,30 @@ let server = require('https').createServer({
     key: fs.readFileSync(keyFile),
     cert: fs.readFileSync(certFile)
 }, app);
-//let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 
 let ROOT = './Public';
 let PORT = 4000;
 
 let games = {};
+//Track active games
+let activeGames = 0;
+//Track number of active connections to the server
+let activeUsers = 0;
+//Keep track of game play locations (if user approved)
+if(!fs.existsSync('./Data/analytics.json')){
+    let analytics = {
+        'locations': [],
+        'maxActiveGames': 0,
+        'maxActiveUsers': 0
+    };
+
+    fs.writeFileSync('./Data/analytics.json', JSON.stringify(analytics), function(err){
+        if(err) console.log(err);
+    });
+}
+
+let analytics = JSON.parse(fs.readFileSync('./Data/analytics.json'));
 
 app.get('/', function(req, res){
    res.sendfile(ROOT+'/game.html');
@@ -33,7 +50,9 @@ app.get('/', function(req, res){
 app.use('/', express.static('Public'));
 
 io.on('connection', function(client) {
-    
+
+    activeUsers++;
+
     client.on('createGame', function(data){
 
         removeRooms(client);
@@ -63,9 +82,13 @@ io.on('connection', function(client) {
         client.emit('setup', id);
         client['gameID'] = id;
 
+        activeGames++;
+
         io.to(id).emit('updateList', Object.keys(games[id]['players']));
 
-        console.log(games);
+        if(data['saveData']) analytics.locations.push(data.location);
+
+        updateAnalytics();
 
     });
 
@@ -128,6 +151,7 @@ io.on('connection', function(client) {
     client.on('disconnect', function(){
 
         updateGames(client);
+        if(activeUsers) activeUsers--;
 
     });
 
@@ -139,8 +163,6 @@ io.on('connection', function(client) {
         let index = list.indexOf(client.userName);
 
         let hunter = list[(index+list.length-1)%list.length];
-
-        console.log(games[id]['players'][hunter].kills);
 
         games[id]['players'][hunter]['kills'] += 1;
 
@@ -269,12 +291,12 @@ function updateGames(client){
     let id = client.gameID;
 
     if(games[id]){
-        console.log(client.userName);
         delete games[id]['players'][client.userName];
     }
 
     if(typeof io.sockets.adapter.rooms[id] === 'undefined' && games[id]){
         clearInterval(games[id].loop);
+        activeGames--;
         delete games[id];
     } else {
         if(id) io.to(id).emit('updateList', Object.keys(games[id]['players']));
@@ -320,4 +342,14 @@ function measure(lat1, lon1, lat2, lon2){  // generally used geo measurement fun
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
     return d * 1000; // meters
+}
+
+function updateAnalytics(){
+
+    if(activeGames > analytics['maxActiveGames']) analytics['maxActiveGames'] = activeGames;
+    if(activeUsers > analytics['maxActiveUsers']) analytics['maxActiveUsers'] = activeUsers;
+
+    fs.writeFileSync('./Data/analytics.json', analytics, function(err){
+        console.log(err);
+    });
 }
