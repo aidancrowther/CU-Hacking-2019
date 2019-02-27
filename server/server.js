@@ -5,10 +5,18 @@ const hunterDmg = 10; //damage dealt by a nearby hunter
 const OOBdmg = 10; //damage taken when out of bounds
 const startingHp = 100;
 
+let keyFile = './server.key'
+let certFile = './server.cert';
+
+if(fs.existsSync('./certs')){
+    keyFile = './certs/private.key';
+    certFile = './certs/certificate.crt';
+}
+
 let app = express();
 let server = require('https').createServer({
-    key: fs.readFileSync('./certs/private.key'),
-    cert: fs.readFileSync('./certs/certificate.crt')
+    key: fs.readFileSync(keyFile),
+    cert: fs.readFileSync(certFile)
 }, app);
 //let server = require('http').createServer(app);
 let io = require('socket.io')(server);
