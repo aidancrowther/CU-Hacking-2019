@@ -1,11 +1,26 @@
 let socket = io.connect(window.location.origin);
 let numPlayers = 0;
 let getPosLoop;
+let saveData = false;// user has given permission to anonymously store location information
 
-// change which html page is visible to the user
+//change which html page is visible to the user
 function goTo(destPage){
 	$(".page").css("visibility", "hidden");
 	$(destPage).css("visibility", "visible");
+}
+
+//sets whether or not user has given permission to store location info
+function permission(given, cookie){
+	if(!given){
+		saveData = false;
+		return;
+	}
+	
+	saveData = true;
+	
+	if(!cookie) return;
+	//store a cookie for future reference
+	//TODO: store a cookie saying that we can always store location information
 }
 
 //sends the client's mane, position and selected radius to the server
@@ -19,7 +34,8 @@ function createGame(){
 		'userName': name,
 		'location': pos,
 		'startDelay': delay,
-		'radius': radius
+		'radius': radius,
+		"saveData": saveData
 	};
 	
 	console.log('Info sent at creation:');
@@ -44,7 +60,7 @@ function joinGame(){
 	$("#roomCode").text(room);
 }
 
-// notifies the server that the game is ready to be started
+//notifies the server that the game is ready to be started
 function startGame(){
 	socket.emit('startGame');
 }
