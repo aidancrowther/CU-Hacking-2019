@@ -13,14 +13,17 @@ function goTo(destPage){
 function permission(given, cookie){
 	if(!given){
 		saveData = false;
+		console.log("Data: not saved\n" + "Cookies: " + (cookie ? "yes" : "no"));
 		return;
 	}
 	
 	saveData = true;
 	
+	console.log("Data: saved\n" + "Cookies: " + (cookie ? "yes" : "no"));
+	
 	if(!cookie) return;
 	//store a cookie for future reference
-	//TODO: store a cookie saying that we can always store location information
+	//TODO: store a cookie saying that we can always store location information from this client
 }
 
 //sends the client's mane, position and selected radius to the server

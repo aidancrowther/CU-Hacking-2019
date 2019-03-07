@@ -23,9 +23,29 @@
     var targetCircle;
 </script>
 
-<!--TODO: create disclaimer page to ask permission to store location information-->
+<div id="disclaimerPage" class="page" style="visibility: visible;">
+	<!--TODO: format everything all pretty-like-->
+	<br><br>
+	<h2 align="center">Disclaimer</h2>
+	<p>
+		<!--TODO: add disclaimer Text-->
+		BlaBlaBla
+	</p>
 
-<div id="landingPage" class="page" style="visibility: visible;">
+	<label for="storeCookies">Store a Cookie?</label><input type="checkbox" id="storeCookies">
+
+	<button type="button" class="btn"
+	        onclick="permission(true, $('#storeCookies')[0].checked); goTo('#landingPage')">
+		I Agree
+	</button>
+
+	<button type="button" class="btn"
+	        onclick="permission(false, $('#storeCookies')[0].checked); goTo('#landingPage')">
+		No Thanks
+	</button>
+</div>
+
+<div id="landingPage" class="page">
 	<br><br>
 	<h1 align="center">Hunt Royale</h1>
 	<br><br><br>
